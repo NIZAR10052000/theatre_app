@@ -7,12 +7,18 @@ use App\Models\Event;
 
 class EventController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // On récupère tous les événements, triés par date de la plus proche à la plus lointaine
-        $events = Event::orderBy('event_date', 'asc')->get();
+        $query = Event::orderBy('event_date', 'asc');
 
-        // On envoie ces données à une vue  events.index
-        return view('events.index', compact('events'));
+        if ($request->has('period') && $request->period != 'Toutes les périodes') {
+            $query->where('period', $request->period);
+        }
+
+        $events = $query->get();
+        
+        $periods = Event::select('period')->distinct()->pluck('period');
+
+        return view('events.index', compact('events', 'periods'));
     }
 }
