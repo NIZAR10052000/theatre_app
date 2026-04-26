@@ -1,36 +1,40 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programme du Théâtre</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+@extends('layouts.app')
 
-<div class="container mt-5">
-    <h1 class="text-center mb-5">🎭 Programme du Théâtre Universitaire</h1>
+@section('title', 'Programme - Théâtre Ça Respire Encore')
 
-    <div class="row">
-        @foreach($events as $event)
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-primary">{{ $event->title }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">
-                            📅 {{ \Carbon\Carbon::parse($event->event_date)->format('d/m/Y à H:i') }}
-                        </h6>
-                        <p class="card-text">{{ Str::limit($event->description, 100) }}</p>
-                    </div>
-                    <div class="card-footer bg-white border-top-0">
-                        <span class="badge bg-success">{{ $event->capacity }} places dispo</span>
-                        <button class="btn btn-sm btn-outline-primary float-end">Réserver</button>
+@section('content')
+<section class="container mx-auto px-4 py-12">
+    <h1 class="text-5xl font-bold mb-2">Notre Programme</h1>
+    <p class="text-zinc-500 mb-10">1er semestre 2026</p>
+
+    <!-- Tabs -->
+    <div class="flex flex-wrap gap-4 mb-12 border-b border-zinc-100 pb-6">
+        <button class="px-6 py-2 rounded-full bg-theatre-red text-white font-bold shadow-md">Spectacles</button>
+        <button class="px-6 py-2 rounded-full hover:bg-zinc-100 text-zinc-600 font-bold transition-colors">Résidences</button>
+        <button class="px-6 py-2 rounded-full hover:bg-zinc-100 text-zinc-600 font-bold transition-colors">Amuse-gueules</button>
+        <button class="px-6 py-2 rounded-full hover:bg-zinc-100 text-zinc-600 font-bold transition-colors">Ateliers</button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        @forelse($events as $event)
+            <div class="card-premium">
+                <div class="relative h-48 bg-zinc-100">
+                    <img src="https://images.unsplash.com/photo-1503095396549-80705a509c61?auto=format&fit=crop&w=800" alt="{{ $event->title }}" class="w-full h-full object-cover">
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">{{ $event->title }}</h3>
+                    <p class="text-zinc-600 text-sm mb-4 line-clamp-2">{{ $event->description }}</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium text-zinc-500">📅 {{ \Carbon\Carbon::parse($event->event_date)->format('d M Y') }}</span>
+                        <a href="#" class="btn-red text-xs px-4">Réserver</a>
                     </div>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class="col-span-full py-20 text-center bg-white rounded-2xl border border-dashed border-zinc-200">
+                <p class="text-zinc-400">Aucun événement prévu pour le moment.</p>
+            </div>
+        @endforelse
     </div>
-</div>
-
-</body>
-</html>
+</section>
+@endsection
