@@ -15,10 +15,15 @@ class EventController extends Controller
             $query->where('period', $request->period);
         }
 
+        if ($request->has('category') && $request->category != 'Tous') {
+            $query->where('category', $request->category);
+        }
+
         $events = $query->get();
         
         $periods = Event::select('period')->distinct()->pluck('period');
+        $categories = Event::select('category')->distinct()->pluck('category');
 
-        return view('events.index', compact('events', 'periods'));
+        return view('events.index', compact('events', 'periods', 'categories'));
     }
 }

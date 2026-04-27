@@ -12,9 +12,15 @@ class Event extends Model
     // Les champs qu'on autorise à remplir via un formulaire
     protected $fillable = [
         'title',
+        'category',
+        'period',
         'description',
         'event_date',
-        'capacity'
+        'event_time',
+        'location',
+        'capacity',
+        'image_path',
+        'is_reported'
     ];
 
     //Les relations

@@ -22,6 +22,9 @@
         <div class="w-full md:w-72">
             <label class="block text-sm font-bold text-zinc-500 mb-2">Filtrer par période</label>
             <form action="{{ route('events.index') }}" method="GET" id="filterForm">
+                @if(request('category'))
+                    <input type="hidden" name="category" value="{{ request('category') }}">
+                @endif
                 <div class="relative">
                     <select name="period" onchange="this.form.submit()" class="w-full appearance-none bg-white border-2 border-theatre-red rounded-2xl px-6 py-3 font-bold text-zinc-700 cursor-pointer focus:outline-none focus:ring-4 focus:ring-red-100 transition-all">
                         <option value="Toutes les périodes">Toutes les périodes</option>
@@ -37,85 +40,105 @@
         </div>
 
         <div class="flex flex-wrap gap-3">
-            <button class="px-6 py-2 rounded-full bg-zinc-100 text-zinc-600 text-sm font-bold hover:bg-theatre-red hover:text-white transition-all">Spectacles</button>
-            <button class="px-6 py-2 rounded-full bg-zinc-100 text-zinc-600 text-sm font-bold hover:bg-theatre-red hover:text-white transition-all">Amuse-gueules</button>
-            <button class="px-6 py-2 rounded-full bg-zinc-100 text-zinc-600 text-sm font-bold hover:bg-theatre-red hover:text-white transition-all">Résidences</button>
+            <a href="{{ route('events.index', ['period' => request('period')]) }}" 
+               class="px-6 py-2 rounded-full text-sm font-bold transition-all {{ !request('category') || request('category') == 'Tous' ? 'bg-theatre-red text-white' : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200' }}">
+               Tous
+            </a>
+            @foreach($categories as $cat)
+                @if($cat != 'Pistes Amuse-gueules')
+                    <a href="{{ route('events.index', ['category' => $cat, 'period' => request('period')]) }}" 
+                       class="px-6 py-2 rounded-full text-sm font-bold transition-all {{ request('category') == $cat ? 'bg-theatre-red text-white' : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200' }}">
+                       {{ $cat }}
+                    </a>
+                @endif
+            @endforeach
         </div>
     </div>
 
     @php
-        $eventsByPeriod = $events->filter(fn($e) => $e->category != 'Pistes Amuse-gueules')->groupBy('period');
+        $eventsByYear = $events->filter(fn($e) => $e->category != 'Pistes Amuse-gueules')
+                               ->groupBy(fn($e) => \Carbon\Carbon::parse($e->event_date)->format('Y'));
         $pistes = $events->filter(fn($e) => $e->category == 'Pistes Amuse-gueules');
     @endphp
 
-    <div class="max-w-5xl mx-auto space-y-24">
-        @forelse($eventsByPeriod as $periodName => $periodEvents)
+    <div class="max-w-5xl mx-auto space-y-32">
+        @forelse($eventsByYear as $year => $yearEvents)
             <div>
-                <h2 class="text-4xl font-bold mb-12 flex items-center gap-4 text-zinc-800">
-                    <span class="bg-theatre-red w-2 h-10 rounded-full"></span>
-                    {{ $periodName }}
-                </h2>
+                <div class="flex items-center gap-6 mb-16">
+                    <h2 class="text-6xl font-black text-zinc-100 tracking-tighter">{{ $year }}</h2>
+                    <div class="h-px bg-zinc-100 flex-1"></div>
+                </div>
 
-                <div class="grid gap-10">
-                    @php
-                        $eventsByMonth = $periodEvents->groupBy(function($event) {
-                            return \Carbon\Carbon::parse($event->event_date)->translatedFormat('F');
-                        });
-                    @endphp
+                @php
+                    $eventsByPeriod = $yearEvents->groupBy('period');
+                @endphp
 
-                    @foreach($eventsByMonth as $month => $monthEvents)
-                        <div class="space-y-6">
-                            <h3 class="text-xl font-bold text-zinc-400 uppercase tracking-widest ml-4">{{ $month }}</h3>
-                            
-                            @foreach($monthEvents as $event)
-                                <div class="bg-white rounded-3xl shadow-sm border border-zinc-100 overflow-hidden flex flex-col md:flex-row group hover:shadow-2xl transition-all duration-700">
-                                    <div class="bg-theatre-cream p-8 flex flex-col items-center justify-center min-w-[180px] border-r border-zinc-50 group-hover:bg-red-50 transition-colors duration-700">
-                                        <span class="text-4xl font-bold text-theatre-red">{{ \Carbon\Carbon::parse($event->event_date)->format('d') }}</span>
-                                        <span class="text-zinc-500 font-bold uppercase tracking-widest text-xs mt-1">{{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('M') }}</span>
-                                        @if($event->event_time)
-                                            <div class="mt-4 flex flex-col items-center gap-1">
-                                                <span class="px-4 py-1 bg-white border border-zinc-100 rounded-full text-xs font-bold text-zinc-800 shadow-sm">{{ $event->event_time }}</span>
+                @foreach($eventsByPeriod as $periodName => $periodEvents)
+                    <div class="mb-20 last:mb-0">
+                        <h3 class="text-3xl font-bold mb-10 flex items-center gap-4 text-zinc-800">
+                            <span class="bg-theatre-red w-2 h-8 rounded-full"></span>
+                            {{ $periodName }}
+                        </h3>
+
+                        <div class="grid gap-8">
+                            @php
+                                $eventsByMonth = $periodEvents->groupBy(function($event) {
+                                    return \Carbon\Carbon::parse($event->event_date)->translatedFormat('F');
+                                });
+                            @endphp
+
+                            @foreach($eventsByMonth as $month => $monthEvents)
+                                <div class="space-y-4">
+                                    <h4 class="text-xs font-black text-zinc-400 uppercase tracking-[0.3em] ml-2">{{ $month }}</h4>
+                                    
+                                    @foreach($monthEvents as $event)
+                                        <div class="bg-white rounded-3xl shadow-sm border border-zinc-100 overflow-hidden flex flex-col md:flex-row group hover:shadow-xl transition-all duration-500">
+                                            <div class="bg-zinc-50 p-6 flex flex-col items-center justify-center min-w-[140px] border-r border-zinc-50 group-hover:bg-red-50 transition-colors duration-500">
+                                                <span class="text-3xl font-bold text-theatre-red">{{ \Carbon\Carbon::parse($event->event_date)->format('d') }}</span>
+                                                <span class="text-zinc-500 font-bold uppercase tracking-widest text-[10px] mt-1">{{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('M') }}</span>
+                                                @if($event->event_time)
+                                                    <span class="mt-3 px-3 py-1 bg-white border border-zinc-100 rounded-full text-[10px] font-bold text-zinc-600">{{ $event->event_time }}</span>
+                                                @endif
                                             </div>
-                                        @endif
-                                    </div>
 
-                                    <div class="p-8 flex-1 flex flex-col">
-                                        <div class="flex items-center gap-3 mb-4">
-                                            <span class="px-3 py-1 bg-zinc-100 text-zinc-500 rounded-full text-[10px] font-black uppercase tracking-widest">
-                                                {{ $event->category }}
-                                            </span>
-                                            @if($event->is_reported)
-                                                <span class="px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-orange-100">
-                                                    ⚠️ REPORTÉ
-                                                </span>
-                                            @endif
+                                            <div class="p-6 flex-1 flex flex-col">
+                                                <div class="flex items-center gap-2 mb-3">
+                                                    <span class="px-2 py-0.5 bg-zinc-100 text-zinc-500 rounded-md text-[9px] font-black uppercase tracking-widest">
+                                                        {{ $event->category }}
+                                                    </span>
+                                                    @if($event->is_reported)
+                                                        <span class="px-2 py-0.5 bg-orange-50 text-orange-600 rounded-md text-[9px] font-black uppercase tracking-widest border border-orange-100">
+                                                            ⚠️ REPORTÉ
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                                <h5 class="text-xl font-bold mb-2 group-hover:text-theatre-red transition-colors duration-300">
+                                                    {{ $event->title }}
+                                                </h5>
+                                                <p class="text-zinc-500 text-sm leading-relaxed mb-4">
+                                                    {{ $event->description }}
+                                                </p>
+                                                <div class="flex items-center justify-between mt-auto pt-4 border-t border-zinc-50">
+                                                    <div class="flex items-center gap-2 text-zinc-400 text-xs font-medium">
+                                                        <span class="text-theatre-red">📍</span>
+                                                        {{ $event->location }}
+                                                    </div>
+                                                    <button class="text-theatre-red font-bold text-xs hover:underline active:scale-95 transition-transform">Réserver →</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <h4 class="text-2xl font-bold mb-4 group-hover:text-theatre-red transition-colors duration-500 leading-tight">
-                                            {{ $event->title }}
-                                        </h4>
-                                        <p class="text-zinc-600 leading-relaxed mb-8 flex-1">
-                                            {{ $event->description }}
-                                        </p>
-                                        <div class="flex items-center justify-between pt-6 border-t border-zinc-50">
-                                            <div class="flex items-center gap-3 text-zinc-400 text-sm font-medium">
-                                                <div class="w-8 h-8 rounded-full bg-zinc-50 flex items-center justify-center text-theatre-red">📍</div>
-                                                {{ $event->location }}
-                                            </div>
-                                            <div class="flex gap-4">
-                                                <button class="btn-red text-sm px-8 shadow-red-200 shadow-lg active:scale-95">Réserver</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             @endforeach
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
             </div>
         @empty
-            <div class="py-32 text-center bg-theatre-cream rounded-[40px] border-4 border-dashed border-zinc-200">
-                <div class="text-6xl mb-6">🎭</div>
-                <p class="text-zinc-500 font-bold text-xl">Aucun événement trouvé.</p>
+            <div class="py-32 text-center bg-zinc-50 rounded-[40px] border-2 border-dashed border-zinc-200">
+                <div class="text-6xl mb-6 opacity-20 grayscale">🎭</div>
+                <p class="text-zinc-400 font-bold text-xl uppercase tracking-widest">Aucun événement trouvé</p>
+                <a href="{{ route('events.index') }}" class="mt-6 inline-block text-theatre-red font-bold hover:underline">Voir tout le programme</a>
             </div>
         @endforelse
     </div>
