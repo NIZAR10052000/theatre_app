@@ -58,9 +58,9 @@
             <nav class="hidden md:flex items-center gap-8">
                 <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'text-theatre-red' : '' }}">Accueil</a>
                 <a href="{{ route('events.index') }}" class="nav-link {{ request()->routeIs('events.index') ? 'text-theatre-red' : '' }}">Programme</a>
-                <a href="#" class="nav-link">Le Lieu</a>
-                <a href="#" class="nav-link">Billetterie</a>
-                <a href="#" class="nav-link">Contact</a>
+                <a href="{{ route('ateliers') }}" class="nav-link {{ request()->routeIs('ateliers') ? 'text-theatre-red' : '' }}">Ateliers</a>
+                <a href="{{ route('home') }}#about" class="nav-link">Le Lieu</a>
+                <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'text-theatre-red' : '' }}">Contact</a>
             </nav>
 
             <div class="flex items-center gap-4">
@@ -86,21 +86,21 @@
                 <h3 class="font-bold text-lg mb-4 flex items-center justify-center md:justify-start gap-2">
                     <span class="text-theatre-red">📍</span> Le Lieu
                 </h3>
-                <p class="text-zinc-600">Village de Reillon<br>Grand Est, France</p>
-                <a href="#" class="text-theatre-red font-medium text-sm mt-2 inline-block">En savoir plus →</a>
+                <p class="text-zinc-600">3, Grande Rue<br>54450 Reillon</p>
+                <a href="{{ route('home') }}#about" class="text-theatre-red font-medium text-sm mt-2 inline-block">En savoir plus →</a>
             </div>
             <div>
                 <h3 class="font-bold text-lg mb-4 flex items-center justify-center md:justify-start gap-2">
                     <span class="text-theatre-red">🕒</span> Horaires
                 </h3>
-                <p class="text-zinc-600">Lun - Ven : 14h - 18h<br>Représentations en soirée</p>
+                <p class="text-zinc-600">Lun - Ven : 14h - 18h<br>Spectacles selon programmation</p>
             </div>
             <div>
                 <h3 class="font-bold text-lg mb-4 flex items-center justify-center md:justify-start gap-2">
                     <span class="text-theatre-red">📞</span> Contact
                 </h3>
-                <p class="text-zinc-600">03 83 32 19 81<br>carespire.encore17@wanadoo.fr</p>
-                <a href="#" class="text-theatre-red font-medium text-sm mt-2 inline-block">Nous écrire →</a>
+                <p class="text-zinc-600">06 80 40 04 61<br>ca.respire.encore@orange.fr</p>
+                <a href="{{ route('contact') }}" class="text-theatre-red font-medium text-sm mt-2 inline-block">Nous écrire →</a>
             </div>
         </div>
         <div class="container mx-auto px-4 mt-12 pt-8 border-t border-zinc-50 text-center text-zinc-400 text-sm">
