@@ -113,32 +113,78 @@
     </div>
 </section>
 
-<!-- Lieu & Archives Section -->
-<section class="container mx-auto px-4 py-32">
-    <div class="grid lg:grid-cols-2 gap-20">
+<!-- Lieu & Details Section -->
+<section id="lieu" class="container mx-auto px-4 py-32">
+    <div class="grid lg:grid-cols-2 gap-20 mb-20">
         <div class="space-y-12">
             <div>
                 <h2 class="text-4xl font-bold flex items-center gap-4 text-zinc-800 mb-8">
                     <span class="bg-theatre-red w-3 h-12 rounded-full"></span>
-                    🎭 Le Concept & Le Lieu
+                    🎭 Le Lieu
                 </h2>
                 <p class="text-zinc-600 text-lg mb-8 leading-relaxed">
                     Situé à Reillon, notre théâtre est un écrin chaleureux conçu pour la rencontre entre l'œuvre et son public.
                 </p>
+                <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-zinc-100 overflow-hidden mb-8">
+                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">📍 Localisation & Accès</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3 text-zinc-700">
+                            <span class="text-xl">🚗</span>
+                            <p class="text-sm"><strong>Itinéraire :</strong> À 15 min de Lunéville, accès facile par la N4 (sortie Blâmont).</p>
+                        </div>
+                        <div class="flex items-start gap-3 text-zinc-700">
+                            <span class="text-xl">🗺️</span>
+                            <p class="text-sm"><strong>Adresse :</strong> Reillon, Meurthe-et-Moselle.</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="rounded-[3rem] overflow-hidden shadow-2xl">
-                    <img src="{{ asset('images/photo4.jpg') }}" alt="La Salle" class="w-full h-80 object-cover">
+                    <img src="{{ asset('images/photo4.jpg') }}" alt="La Salle" class="w-full h-64 object-cover">
                 </div>
             </div>
         </div>
         <div class="space-y-12">
-            <div class="bg-theatre-cream p-12 rounded-[4rem] border-2 border-dashed border-theatre-red/20 relative">
-                <h3 class="text-2xl font-bold mb-6">🍷 Les "Amuse-gueules"</h3>
-                <p class="text-zinc-500 mb-8">Un rendez-vous incontournable : apéro-lectures, convivialité et partage de textes.</p>
-                <div class="bg-white p-4 rounded-3xl shadow-xl transform -rotate-3 hover:rotate-0 transition-transform duration-500">
-                    <img src="{{ asset('images/photo5.jpg') }}" alt="Archives Poster" class="w-full h-auto rounded-2xl">
+            <h2 class="text-4xl font-bold flex items-center gap-4 text-zinc-800 mb-8">
+                <span class="bg-theatre-red w-3 h-12 rounded-full"></span>
+                🛠️ Détails Techniques
+            </h2>
+            <div class="grid grid-cols-1 gap-6">
+                <div class="bg-zinc-900 text-white p-10 rounded-[3rem] shadow-xl relative overflow-hidden group hover:scale-[1.02] transition-transform">
+                    <div class="relative z-10 grid grid-cols-3 gap-8">
+                        <div>
+                            <h3 class="text-lg font-bold mb-4 text-theatre-red">🔊 Son</h3>
+                            <ul class="text-zinc-400 space-y-2 text-xs">
+                                <li>Console 12 voies</li>
+                                <li>Système 4 enceintes</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold mb-4 text-theatre-red">💡 Lumière</h3>
+                            <ul class="text-zinc-400 space-y-2 text-xs">
+                                <li>Console 24 circuits</li>
+                                <li>Par 56, PC 650W</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold mb-4 text-theatre-red">📐 Plateau</h3>
+                            <ul class="text-zinc-400 space-y-2 text-xs">
+                                <li>6m x 4m</li>
+                                <li>H: 3.5m</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-theatre-red/10 rounded-full blur-3xl"></div>
                 </div>
-                <div class="absolute -top-6 -right-6 bg-theatre-red text-white px-6 py-2 rounded-full font-bold shadow-lg">
-                    Archives
+                
+                <div class="bg-theatre-cream p-12 rounded-[3rem] border-2 border-dashed border-theatre-red/20 relative">
+                    <h3 class="text-2xl font-bold mb-6">🍷 Les "Amuse-gueules"</h3>
+                    <p class="text-zinc-500 mb-8">Un rendez-vous incontournable : apéro-lectures, convivialité et partage de textes.</p>
+                    <div class="bg-white p-4 rounded-3xl shadow-xl transform -rotate-3 hover:rotate-0 transition-transform duration-500">
+                        <img src="{{ asset('images/photo5.jpg') }}" alt="Archives Poster" class="w-full h-auto rounded-2xl">
+                    </div>
+                    <div class="absolute -top-6 -right-6 bg-theatre-red text-white px-6 py-2 rounded-full font-bold shadow-lg">
+                        Archives
+                    </div>
                 </div>
             </div>
         </div>

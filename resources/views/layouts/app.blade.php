@@ -59,7 +59,7 @@
                 <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'text-theatre-red' : '' }}">Accueil</a>
                 <a href="{{ route('events.index') }}" class="nav-link {{ request()->routeIs('events.index') ? 'text-theatre-red' : '' }}">Programme</a>
                 <a href="{{ route('ateliers') }}" class="nav-link {{ request()->routeIs('ateliers') ? 'text-theatre-red' : '' }}">Ateliers</a>
-                <a href="{{ route('home') }}#about" class="nav-link">Le Lieu</a>
+                <a href="{{ route('home') }}#lieu" class="nav-link">Le Lieu</a>
                 <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'text-theatre-red' : '' }}">Contact</a>
             </nav>
 
@@ -86,8 +86,8 @@
                 <h3 class="font-bold text-lg mb-4 flex items-center justify-center md:justify-start gap-2">
                     <span class="text-theatre-red">📍</span> Le Lieu
                 </h3>
-                <p class="text-zinc-600">3, Grande Rue<br>54450 Reillon</p>
-                <a href="{{ route('home') }}#about" class="text-theatre-red font-medium text-sm mt-2 inline-block">En savoir plus →</a>
+                <p class="text-zinc-600">Reillon<br>54450 Meurthe-et-Moselle</p>
+                <a href="{{ route('home') }}#lieu" class="text-theatre-red font-medium text-sm mt-2 inline-block">Voir le lieu →</a>
             </div>
             <div>
                 <h3 class="font-bold text-lg mb-4 flex items-center justify-center md:justify-start gap-2">
