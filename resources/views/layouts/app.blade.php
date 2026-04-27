@@ -47,17 +47,17 @@
 </head>
 <body class="antialiased">
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-zinc-100">
-        <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-theatre-red rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-sm">
+                <div class="w-8 h-8 bg-theatre-red rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-sm">
                     🎭
                 </div>
-                <span class="font-bold text-xl tracking-tight hidden md:block">Ça Respire Encore</span>
+                <span class="font-bold text-lg tracking-tight hidden md:block">Ça Respire Encore</span>
             </a>
 
-            <nav class="hidden md:flex items-center gap-8">
+            <nav class="hidden md:flex items-center gap-6">
                 <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'text-theatre-red' : '' }}">Accueil</a>
-                <a href="{{ route('events.index') }}" class="nav-link {{ request()->routeIs('events.index') ? 'text-theatre-red' : '' }}">Programme</a>
+                <a href="{{ route('events.index') }}" class="nav-link {{ request()->routeIs('events.index') ? 'text-theatre-red' : '' }}">Agenda</a>
                 <a href="{{ route('ateliers') }}" class="nav-link {{ request()->routeIs('ateliers') ? 'text-theatre-red' : '' }}">Ateliers</a>
                 <a href="{{ route('home') }}#lieu" class="nav-link">Le Lieu</a>
                 <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'text-theatre-red' : '' }}">Contact</a>

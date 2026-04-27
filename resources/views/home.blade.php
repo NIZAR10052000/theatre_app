@@ -4,12 +4,12 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-theatre-red pt-12 pb-32 md:py-28 overflow-hidden relative">
+<section class="bg-theatre-red pt-12 pb-24 md:py-20 overflow-hidden relative">
     <div class="container mx-auto px-4 relative z-10">
         <div class="flex flex-col lg:flex-row items-center gap-16">
             <div class="flex-1 text-center lg:text-left text-white">
                 <span class="inline-block px-4 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold uppercase tracking-widest mb-6">Compagnie de théâtre</span>
-                <h1 class="text-5xl md:text-8xl font-black font-serif mb-6 tracking-tighter leading-none">
+                <h1 class="text-5xl md:text-7xl font-black font-serif mb-6 tracking-tighter leading-none">
                     Ça Respire <br><span class="text-red-200">Encore</span>
                 </h1>
                 <p class="text-xl md:text-2xl text-white/80 mb-10 font-medium max-w-xl">
@@ -17,7 +17,7 @@
                 </p>
                 <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
                     <a href="{{ route('events.index') }}" class="bg-white text-theatre-red px-10 py-4 rounded-full font-bold text-lg shadow-xl hover:bg-zinc-100 transition-all hover:scale-105 active:scale-95">
-                        Agenda 2026
+                        Agenda
                     </a>
                     <a href="#about" class="bg-red-800/40 backdrop-blur-md text-white border border-white/20 px-10 py-4 rounded-full font-bold text-lg hover:bg-red-800 transition-all">
                         Notre Histoire
@@ -35,7 +35,7 @@
 
 <!-- Categories Bar -->
 <section class="container mx-auto px-4 -mt-16 relative z-20">
-    <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-4 md:p-8 flex flex-wrap justify-center gap-6 border border-white/20">
+    <div class="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-4 md:p-8 flex flex-wrap justify-center gap-4 border border-white/20">
         <a href="{{ route('events.index', ['category' => 'Spectacles']) }}" class="flex items-center gap-3 px-8 py-4 rounded-2xl bg-zinc-50 hover:bg-theatre-red hover:text-white transition-all group border border-zinc-100">
             <span class="text-3xl group-hover:scale-110 transition-transform">🎭</span>
             <span class="font-bold">Spectacles</span>
@@ -56,7 +56,7 @@
 </section>
 
 <!-- Présentation Section -->
-<section id="about" class="container mx-auto px-4 py-32">
+<section id="about" class="container mx-auto px-4 py-20">
     <div class="flex flex-col lg:flex-row items-center gap-20">
         <div class="flex-1 space-y-8">
             <h2 class="text-4xl md:text-5xl font-bold flex items-center gap-4 text-zinc-800">
@@ -93,7 +93,7 @@
 </section>
 
 <!-- Presse Section -->
-<section class="bg-zinc-100 py-32 overflow-hidden">
+<section class="bg-zinc-100 py-20 overflow-hidden">
     <div class="container mx-auto px-4">
         <div class="flex flex-col lg:flex-row gap-20 items-center">
             <div class="flex-1 order-2 lg:order-1">
@@ -114,7 +114,7 @@
 </section>
 
 <!-- Lieu & Details Section -->
-<section id="lieu" class="container mx-auto px-4 py-32">
+<section id="lieu" class="container mx-auto px-4 py-20">
     <div class="grid lg:grid-cols-2 gap-20 mb-20">
         <div class="space-y-12">
             <div>
@@ -193,7 +193,7 @@
 
 
 <!-- Upcoming Section -->
-<section class="bg-theatre-cream py-32">
+<section class="bg-theatre-cream py-20">
     <div class="container mx-auto px-4">
         <h2 class="text-4xl font-black mb-16 flex items-center gap-6">
             Prochainement
@@ -232,7 +232,7 @@
                     </div>
                 </div>
             @empty
-                <div class="col-span-3 py-32 text-center bg-white rounded-[3rem] border-4 border-dashed border-zinc-100">
+                <div class="col-span-3 py-20 text-center bg-white rounded-[3rem] border-4 border-dashed border-zinc-100">
                     <p class="text-zinc-400 font-bold text-2xl">Aucun événement à venir pour le moment.</p>
                     <a href="{{ route('events.index') }}" class="text-theatre-red font-black hover:underline mt-4 inline-block uppercase tracking-widest text-sm">Découvrir le programme →</a>
                 </div>

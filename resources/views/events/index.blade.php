@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Agenda 2026 - Théâtre Ça Respire Encore')
+@section('title', 'Agenda - Théâtre Ça Respire Encore')
 
 @section('content')
 <!-- Header Section -->
-<section class="relative bg-zinc-900 py-24 overflow-hidden">
+<section class="relative bg-zinc-900 py-16 overflow-hidden">
     <div class="absolute inset-0 opacity-40">
         <img src="{{ asset('images/hero.png') }}" alt="Artistic Background" class="w-full h-full object-cover grayscale">
     </div>
