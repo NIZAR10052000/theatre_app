@@ -43,9 +43,30 @@
                 @apply bg-white rounded-2xl shadow-lg overflow-hidden border border-zinc-100 transition-transform hover:scale-[1.02];
             }
         }
+
+        body {
+            background-image: url('{{ asset("images/background.jpg") }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(253, 253, 252, 0.85); /* theâtre-cream avec 85% d'opacité pour que ça reste lisible */
+            backdrop-filter: blur(2px); /* Un léger flou pour la beauté */
+            z-index: -1;
+        }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased text-zinc-900">
+
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-zinc-100">
         <div class="container mx-auto px-4 py-3 flex items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-2">
@@ -80,7 +101,7 @@
         @yield('content')
     </main>
 
-    <footer class="bg-white border-t border-zinc-100 mt-20 py-12">
+    <footer class="bg-white/60 backdrop-blur-md border-t border-white/40 mt-20 py-12 relative z-10 shadow-[0_-10px_30px_rgba(0,0,0,0.02)]">
         <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
             <div>
                 <h3 class="font-bold text-lg mb-4 flex items-center justify-center md:justify-start gap-2">
@@ -107,5 +128,6 @@
             &copy; {{ date('Y') }} Théâtre Ça Respire Encore. Tous droits réservés.
         </div>
     </footer>
+
 </body>
 </html>

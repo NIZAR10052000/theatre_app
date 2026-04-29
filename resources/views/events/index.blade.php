@@ -5,8 +5,8 @@
 @section('content')
 <!-- Header Section -->
 <section class="relative bg-zinc-900 py-16 overflow-hidden">
-    <div class="absolute inset-0 opacity-40">
-        <img src="{{ asset('images/hero.png') }}" alt="Artistic Background" class="w-full h-full object-cover grayscale">
+    <div class="absolute inset-0 opacity-30">
+        <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" alt="Artistic Background" class="w-full h-full object-cover grayscale transition-transform duration-1000">
     </div>
     <div class="container mx-auto px-4 relative z-10 text-center">
         <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 font-serif">Agenda</h1>
@@ -92,38 +92,42 @@
                                     <h4 class="text-xs font-black text-zinc-400 uppercase tracking-[0.3em] ml-2">{{ $month }}</h4>
                                     
                                     @foreach($monthEvents as $event)
-                                        <div class="bg-white rounded-3xl shadow-sm border border-zinc-100 overflow-hidden flex flex-col md:flex-row group hover:shadow-xl transition-all duration-500">
-                                            <div class="bg-zinc-50 p-6 flex flex-col items-center justify-center min-w-[140px] border-r border-zinc-50 group-hover:bg-red-50 transition-colors duration-500">
-                                                <span class="text-3xl font-bold text-theatre-red">{{ \Carbon\Carbon::parse($event->event_date)->format('d') }}</span>
-                                                <span class="text-zinc-500 font-bold uppercase tracking-widest text-[10px] mt-1">{{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('M') }}</span>
+                                        <div class="bg-white rounded-[2rem] shadow-sm border border-zinc-100 overflow-hidden flex flex-col md:flex-row group hover:shadow-xl transition-all duration-500">
+                                            <!-- Date Side -->
+                                            <div class="bg-zinc-50 p-8 flex flex-col items-center justify-center min-w-[160px] border-r border-zinc-50 group-hover:bg-red-50 transition-colors duration-500">
+                                                <span class="text-4xl font-black text-theatre-red leading-none">{{ \Carbon\Carbon::parse($event->event_date)->format('d') }}</span>
+                                                <span class="text-xs font-black uppercase tracking-[0.2em] text-zinc-400 mt-2">{{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('M') }}</span>
                                                 @if($event->event_time)
-                                                    <span class="mt-3 px-3 py-1 bg-white border border-zinc-100 rounded-full text-[10px] font-bold text-zinc-600">{{ $event->event_time }}</span>
+                                                    <span class="mt-4 px-4 py-1 bg-white border border-zinc-100 rounded-full text-[10px] font-black text-zinc-600 tracking-wider">{{ $event->event_time }}</span>
                                                 @endif
                                             </div>
 
-                                            <div class="p-6 flex-1 flex flex-col">
-                                                <div class="flex items-center gap-2 mb-3">
-                                                    <span class="px-2 py-0.5 bg-zinc-100 text-zinc-500 rounded-md text-[9px] font-black uppercase tracking-widest">
+                                            <div class="p-8 flex-1 flex flex-col justify-center">
+                                                <div class="flex items-center gap-3 mb-4">
+                                                    <span class="px-2.5 py-0.5 bg-zinc-100 text-zinc-500 rounded text-[9px] font-black uppercase tracking-[0.2em]">
                                                         {{ $event->category }}
                                                     </span>
                                                     @if($event->is_reported)
-                                                        <span class="px-2 py-0.5 bg-orange-50 text-orange-600 rounded-md text-[9px] font-black uppercase tracking-widest border border-orange-100">
+                                                        <span class="px-2.5 py-0.5 bg-orange-50 text-orange-600 rounded text-[9px] font-black uppercase tracking-[0.2em] border border-orange-100">
                                                             ⚠️ REPORTÉ
                                                         </span>
                                                     @endif
                                                 </div>
-                                                <h5 class="text-xl font-bold mb-2 group-hover:text-theatre-red transition-colors duration-300">
+                                                
+                                                <h5 class="text-2xl font-serif font-black mb-3 group-hover:text-theatre-red transition-colors duration-300 leading-tight">
                                                     {{ $event->title }}
                                                 </h5>
-                                                <p class="text-zinc-500 text-sm leading-relaxed mb-4">
+                                                
+                                                <p class="text-zinc-500 text-sm leading-relaxed mb-4 italic">
                                                     {{ $event->description }}
                                                 </p>
+                                                
                                                 <div class="flex items-center justify-between mt-auto pt-4 border-t border-zinc-50">
-                                                    <div class="flex items-center gap-2 text-zinc-400 text-xs font-medium">
+                                                    <div class="flex items-center gap-2 text-zinc-400 text-xs font-bold">
                                                         <span class="text-theatre-red">📍</span>
                                                         {{ $event->location }}
                                                     </div>
-                                                    <button class="text-theatre-red font-bold text-xs hover:underline active:scale-95 transition-transform">Réserver →</button>
+                                                    <button class="text-theatre-red font-black text-xs hover:underline active:scale-95 transition-transform uppercase tracking-widest">Réserver →</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -142,28 +146,5 @@
             </div>
         @endforelse
     </div>
-
-    <!-- Pistes Amuse-Gueules Section -->
-    @if($pistes->count() > 0)
-        <div class="mt-32 max-w-5xl mx-auto">
-            <h2 class="text-4xl font-bold mb-12 text-center">Pistes pour les Amuse-gueules</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                @foreach($pistes as $piste)
-                    <div class="bg-white p-8 rounded-[2rem] border border-zinc-100 shadow-sm hover:shadow-xl transition-all duration-500">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center text-theatre-red font-bold">
-                                {{ $loop->iteration }}
-                            </div>
-                            <h3 class="text-xl font-bold leading-tight">{{ $piste->title }}</h3>
-                        </div>
-                        <p class="text-zinc-600 italic leading-relaxed line-clamp-4">
-                            "{{ $piste->description }}"
-                        </p>
-                        <button class="mt-6 text-theatre-red font-bold text-sm hover:underline">Lire la suite →</button>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    @endif
 </section>
 @endsection
