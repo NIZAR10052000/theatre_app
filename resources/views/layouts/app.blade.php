@@ -70,9 +70,7 @@
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-zinc-100">
         <div class="container mx-auto px-4 py-3 flex items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-theatre-red rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-sm">
-                    🎭
-                </div>
+                <img src="{{ asset('images/Le Pas Fleuri.JPG') }}" alt="Logo" class="w-10 h-10 rounded-lg object-cover shadow-sm">
                 <span class="font-bold text-lg tracking-tight hidden md:block">Ça Respire Encore</span>
             </a>
 
