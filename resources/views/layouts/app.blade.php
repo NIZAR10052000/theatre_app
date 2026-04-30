@@ -11,6 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles / Scripts -->
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <!-- Tailwind CSS CDN (Temporary fix since npm is missing) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -84,10 +87,10 @@
 
             <div class="flex items-center gap-4">
                 <div class="hidden lg:flex items-center border-r border-zinc-200 pr-4 mr-2 gap-3">
-                    <a href="#" class="text-sm font-bold text-zinc-500 hover:text-theatre-red transition-colors">Connexion</a>
-                    <a href="#" class="text-sm font-bold text-white bg-zinc-800 px-4 py-1.5 rounded-lg hover:bg-black transition-all">Troupes</a>
+                    <a href="{{ route('mockups.login') }}" class="text-sm font-bold text-zinc-500 hover:text-theatre-red transition-colors">Connexion</a>
+                    <a href="{{ route('mockups.troupe-dashboard') }}" class="text-sm font-bold text-white bg-zinc-800 px-4 py-1.5 rounded-lg hover:bg-black transition-all">Troupes</a>
                 </div>
-                <a href="#" class="btn-red">Réserver</a>
+                <a href="{{ route('events.index') }}" class="btn-red">Réserver</a>
                 <button class="md:hidden text-zinc-800">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         'email' => 'admin@theatre.fr',
         'password' => bcrypt('password'), // Le mot de passe sera "password"
         'role' => 'admin',
+        'is_verified' => true,
     ]);
 
     //On crée 10 faux utilisateurs (spectateurs)
