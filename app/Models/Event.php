@@ -20,7 +20,9 @@ class Event extends Model
         'location',
         'capacity',
         'image_path',
-        'is_reported'
+        'is_reported',
+        'status',
+        'user_id'
     ];
 
     //Les relations

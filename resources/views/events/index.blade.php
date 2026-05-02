@@ -129,16 +129,31 @@
                                                     {{ $event->description }}
                                                 </p>
                                                 
+                                                @php 
+                                                    $eventDate = \Carbon\Carbon::parse($event->event_date);
+                                                    $isPast = $eventDate->isPast() && !$eventDate->isToday();
+                                                @endphp
+
                                                 <div class="flex items-center justify-between mt-auto pt-4 border-t border-zinc-50">
                                                     <div class="flex items-center gap-2 text-zinc-400 text-xs font-bold">
                                                         <span class="text-theatre-red">📍</span>
                                                         {{ $event->location }}
                                                     </div>
-                                                    @auth
-                                                        <button @click="showReservationModal = true; selectedEventTitle = '{{ addslashes($event->title) }}'; step = 1; quantity = 1;" class="text-theatre-red font-black text-xs hover:underline active:scale-95 transition-transform uppercase tracking-widest">Réserver →</button>
+                                                    @if($isPast)
+                                                        @if($event->media->count() > 0)
+                                                            <a href="{{ route('media.index') }}?event={{ $event->id }}" class="text-zinc-400 font-bold text-[10px] hover:text-theatre-red transition-colors uppercase tracking-[0.2em] flex items-center gap-1">
+                                                                Voir Souvenirs 📸
+                                                            </a>
+                                                        @else
+                                                            <span class="text-zinc-300 font-bold text-[10px] uppercase tracking-[0.2em]">Terminé</span>
+                                                        @endif
                                                     @else
-                                                        <a href="{{ route('mockups.login') }}" class="text-theatre-red font-black text-xs hover:underline active:scale-95 transition-transform uppercase tracking-widest">Réserver →</a>
-                                                    @endauth
+                                                        @auth
+                                                            <button @click="showReservationModal = true; selectedEventTitle = '{{ addslashes($event->title) }}'; step = 1; quantity = 1;" class="text-theatre-red font-black text-xs hover:underline active:scale-95 transition-transform uppercase tracking-widest">Réserver →</button>
+                                                        @else
+                                                            <a href="{{ route('mockups.login', ['redirect' => route('events.index')]) }}" class="text-theatre-red font-black text-xs hover:underline active:scale-95 transition-transform uppercase tracking-widest">Réserver →</a>
+                                                        @endauth
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>

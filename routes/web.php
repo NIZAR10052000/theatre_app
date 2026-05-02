@@ -23,10 +23,28 @@ Route::post('/maquettes/connexion', [App\Http\Controllers\MockupController::clas
 Route::post('/maquettes/inscription', [App\Http\Controllers\MockupController::class, 'processRegister']);
 Route::post('/logout', [App\Http\Controllers\MockupController::class, 'logout'])->name('logout');
 
+// Médiathèque & Contenu
+Route::get('/mediatheque', [App\Http\Controllers\MediaController::class, 'index'])->name('media.index');
+Route::get('/ateliers-formations', [App\Http\Controllers\MediaController::class, 'ateliers'])->name('media.ateliers');
+
 // Routes Administration (Réelles)
 Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/validate-troupe/{id}', [App\Http\Controllers\AdminController::class, 'validateTroupe'])->name('admin.validate-troupe');
     Route::post('/reject-troupe/{id}', [App\Http\Controllers\AdminController::class, 'rejectTroupe'])->name('admin.reject-troupe');
     Route::post('/approve-event/{id}', [App\Http\Controllers\AdminController::class, 'approveEvent'])->name('admin.approve-event');
+    
+    // CRUD Événements Admin
+    Route::post('/events', [App\Http\Controllers\AdminController::class, 'storeEvent'])->name('admin.events.store');
+    Route::put('/events/{id}', [App\Http\Controllers\AdminController::class, 'updateEvent'])->name('admin.events.update');
+    Route::delete('/events/{id}', [App\Http\Controllers\AdminController::class, 'destroyEvent'])->name('admin.events.destroy');
+    
+    // Gestion Médias Admin
+    Route::post('/approve-media/{id}', [App\Http\Controllers\MediaController::class, 'approve'])->name('admin.approve-media');
+});
+
+// Routes Troupe (Espace Atelier)
+Route::prefix('atelier')->middleware('verified_troupe')->group(function () {
+    Route::get('/medias', [App\Http\Controllers\MediaController::class, 'manage'])->name('troupe.medias');
+    Route::post('/medias', [App\Http\Controllers\MediaController::class, 'store'])->name('troupe.medias.store');
 });

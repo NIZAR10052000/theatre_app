@@ -80,7 +80,8 @@
             <nav class="hidden md:flex items-center gap-6">
                 <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'text-theatre-red' : '' }}">Accueil</a>
                 <a href="{{ route('events.index') }}" class="nav-link {{ request()->routeIs('events.index') ? 'text-theatre-red' : '' }}">Agenda</a>
-                <a href="{{ route('ateliers') }}" class="nav-link {{ request()->routeIs('ateliers') ? 'text-theatre-red' : '' }}">Ateliers</a>
+                <a href="{{ route('media.index') }}" class="nav-link {{ request()->routeIs('media.index') ? 'text-theatre-red' : '' }}">Médiathèque</a>
+                <a href="{{ route('media.ateliers') }}" class="nav-link {{ request()->routeIs('media.ateliers') ? 'text-theatre-red' : '' }}">Ateliers</a>
                 <a href="{{ route('home') }}#lieu" class="nav-link">Le Lieu</a>
                 <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'text-theatre-red' : '' }}">Contact</a>
             </nav>
