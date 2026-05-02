@@ -48,4 +48,5 @@ Route::prefix('admin')->middleware('admin')->group(function () {
 Route::prefix('atelier')->middleware('verified_troupe')->group(function () {
     Route::get('/medias', [App\Http\Controllers\MediaController::class, 'manage'])->name('troupe.medias');
     Route::post('/medias', [App\Http\Controllers\MediaController::class, 'store'])->name('troupe.medias.store');
+    Route::post('/events', [App\Http\Controllers\AdminController::class, 'storeEvent'])->name('troupe.events.store');
 });

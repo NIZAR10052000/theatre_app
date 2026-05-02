@@ -26,7 +26,6 @@ class AdminController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'category' => 'required|string',
-            'period' => 'required|string',
             'description' => 'required|string',
             'event_date' => 'required|date',
             'event_time' => 'nullable|string',
@@ -34,12 +33,13 @@ class AdminController extends Controller
             'capacity' => 'required|integer',
         ]);
 
-        $data['status'] = 'published'; // Un admin crée des events direct publiés
+        $data['status'] = auth()->user()->isAdmin() ? 'published' : 'pending';
         $data['user_id'] = auth()->id();
 
         Event::create($data);
 
-        return back()->with('success', 'Événement créé avec succès !');
+        $message = auth()->user()->isAdmin() ? 'Événement créé et publié !' : 'Votre spectacle a été soumis pour validation par le modérateur.';
+        return back()->with('success', $message);
     }
 
     public function updateEvent(Request $request, $id)
@@ -49,7 +49,6 @@ class AdminController extends Controller
         $data = $request->validate([
             'title' => 'required|string|max:255',
             'category' => 'required|string',
-            'period' => 'required|string',
             'description' => 'required|string',
             'event_date' => 'required|date',
             'event_time' => 'nullable|string',

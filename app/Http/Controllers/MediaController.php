@@ -32,7 +32,7 @@ class MediaController extends Controller
     public function ateliers()
     {
         $medias = Media::where('status', 'published')
-                      ->where('category', 'formation')
+                      ->whereIn('category', ['formation', 'tuto'])
                       ->latest()
                       ->get();
                       

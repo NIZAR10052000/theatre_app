@@ -160,14 +160,14 @@
     <div class="bg-white rounded-3xl shadow-sm border border-zinc-100 overflow-hidden" x-data="{ 
         showEventModal: false, 
         isEditing: false,
-        eventData: { id: '', title: '', category: '', period: '', description: '', event_date: '', event_time: '', location: '', capacity: '', status: 'published' }
+        eventData: { id: '', title: '', category: '', description: '', event_date: '', event_time: '', location: '', capacity: '', status: 'published' }
     }">
         <div class="p-6 border-b border-zinc-100 flex justify-between items-center">
             <div>
                 <h3 class="text-xl font-bold font-serif">Gestion de l'Agenda</h3>
                 <p class="text-zinc-500 text-sm">Gérez l'ensemble des spectacles publiés sur le site.</p>
             </div>
-            <button @click="isEditing = false; eventData = { id: '', title: '', category: '', period: '', description: '', event_date: '', event_time: '', location: '', capacity: '', status: 'published' }; showEventModal = true" class="bg-zinc-900 text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-black transition-all">
+            <button @click="isEditing = false; eventData = { id: '', title: '', category: '', description: '', event_date: '', event_time: '', location: '', capacity: '', status: 'published' }; showEventModal = true" class="bg-zinc-900 text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-black transition-all">
                 ➕ Créer un événement
             </button>
         </div>
@@ -198,7 +198,7 @@
                         </td>
                         <td class="px-6 py-4 text-right">
                             <div class="flex justify-end gap-2">
-                                <button @click="isEditing = true; eventData = { id: '{{ $event->id }}', title: '{{ addslashes($event->title) }}', category: '{{ $event->category }}', period: '{{ $event->period }}', description: '{{ addslashes($event->description) }}', event_date: '{{ $event->event_date }}', event_time: '{{ $event->event_time }}', location: '{{ addslashes($event->location) }}', capacity: '{{ $event->capacity }}', status: '{{ $event->status }}' }; showEventModal = true" class="text-zinc-400 hover:text-zinc-800 px-2">✏️</button>
+                                <button @click="isEditing = true; eventData = { id: '{{ $event->id }}', title: '{{ addslashes($event->title) }}', category: '{{ $event->category }}', description: '{{ addslashes($event->description) }}', event_date: '{{ $event->event_date }}', event_time: '{{ $event->event_time }}', location: '{{ addslashes($event->location) }}', capacity: '{{ $event->capacity }}', status: '{{ $event->status }}' }; showEventModal = true" class="text-zinc-400 hover:text-zinc-800 px-2">✏️</button>
                                 <form action="{{ route('admin.events.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Supprimer cet événement ?')">
                                     @csrf
                                     @method('DELETE')
@@ -236,20 +236,13 @@
                             <label class="block text-sm font-bold text-zinc-700 mb-2">Titre du spectacle</label>
                             <input type="text" name="title" x-model="eventData.title" required class="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900">
                         </div>
-                        <div>
+                        <div class="col-span-2">
                             <label class="block text-sm font-bold text-zinc-700 mb-2">Catégorie</label>
                             <select name="category" x-model="eventData.category" required class="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900">
                                 <option value="Théâtre">Théâtre</option>
                                 <option value="Résidence">Résidence</option>
                                 <option value="Pistes Amuse-gueules">Amuse-gueules</option>
                                 <option value="Atelier / Formation">Atelier / Formation</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-zinc-700 mb-2">Période</label>
-                            <select name="period" x-model="eventData.period" required class="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900">
-                                <option value="Printemps / Été">Printemps / Été</option>
-                                <option value="Automne / Hiver">Automne / Hiver</option>
                             </select>
                         </div>
                         <div class="col-span-2">

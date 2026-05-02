@@ -82,7 +82,23 @@ class MockupController extends Controller
 
     public function troupeDashboard()
     {
-        return view('mockups.troupe-dashboard');
+        $user = auth()->user();
+        
+        // Statistiques réelles
+        $upcomingShowsCount = \App\Models\Event::where('user_id', $user->id)
+            ->where('status', 'published')
+            ->where('event_date', '>=', now()->toDateString())
+            ->count();
+            
+        $eventIds = \App\Models\Event::where('user_id', $user->id)->pluck('id');
+        
+        $ticketsSold = \App\Models\Ticket::whereIn('event_id', $eventIds)->count();
+        
+        $revenue = \App\Models\Ticket::whereIn('event_id', $eventIds)->sum('price');
+        
+        $myEvents = \App\Models\Event::where('user_id', $user->id)->latest()->take(5)->get();
+
+        return view('mockups.troupe-dashboard', compact('upcomingShowsCount', 'ticketsSold', 'revenue', 'myEvents'));
     }
 
     public function logout()
