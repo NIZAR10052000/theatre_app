@@ -7,7 +7,9 @@ use App\Http\Controllers\PageController;
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/programme', [EventController::class, 'index'])->name('events.index');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-Route::get('/ateliers', [PageController::class, 'ateliers'])->name('ateliers');
+Route::get('/historique', [PageController::class, 'historique'])->name('pages.historique');
+Route::get('/le-lieu', [PageController::class, 'lieu'])->name('pages.lieu');
+Route::get('/ateliers-formations', [App\Http\Controllers\MediaController::class, 'ateliers'])->name('media.ateliers');
 
 // Routes Maquettes (GET)
 Route::get('/maquettes/connexion', [App\Http\Controllers\MockupController::class, 'login'])->name('mockups.login');
@@ -25,7 +27,6 @@ Route::post('/logout', [App\Http\Controllers\MockupController::class, 'logout'])
 
 // Médiathèque & Contenu
 Route::get('/mediatheque', [App\Http\Controllers\MediaController::class, 'index'])->name('media.index');
-Route::get('/ateliers-formations', [App\Http\Controllers\MediaController::class, 'ateliers'])->name('media.ateliers');
 
 // Routes Administration (Réelles)
 Route::prefix('admin')->middleware('admin')->group(function () {

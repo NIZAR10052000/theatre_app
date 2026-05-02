@@ -32,7 +32,7 @@
                         <span class="relative z-10">Découvrir l'Agenda</span>
                         <div class="absolute inset-0 h-full w-0 bg-white/20 group-hover:w-full transition-all duration-300 ease-out"></div>
                     </a>
-                    <a href="#about" class="px-10 py-4 font-bold text-lg rounded-full border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-white/5 transition-all duration-300">
+                    <a href="{{ route('pages.historique') }}" class="px-10 py-4 font-bold text-lg rounded-full border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-white/5 transition-all duration-300">
                         Notre Histoire
                     </a>
                 </div>
@@ -45,7 +45,7 @@
                     <div class="absolute -inset-4 bg-gradient-to-tr from-theatre-red/40 to-transparent blur-2xl rounded-[3rem] z-0 opacity-70"></div>
                     
                     <div class="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 z-10 bg-zinc-900 transform transition-transform duration-700 hover:scale-[1.02] group">
-                        <img src="{{ asset('images/photo1.jpg') }}" alt="Théâtre Ça Respire Encore" class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500">
+                        <img src="{{ asset('images/photo1.JPG') }}" alt="Théâtre Ça Respire Encore - Le Pas Fleuri" class="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500">
                         
                         <!-- Effet de vignette sombre sur les bords -->
                         <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent pointer-events-none"></div>
@@ -77,7 +77,7 @@
             </div>
             <span class="font-bold text-zinc-800">Amuse-gueules</span>
         </a>
-        <a href="{{ route('ateliers') }}" class="flex flex-col items-center justify-center p-6 rounded-[2rem] bg-white/90 backdrop-blur-md shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border border-white/40">
+        <a href="{{ route('media.ateliers') }}" class="flex flex-col items-center justify-center p-6 rounded-[2rem] bg-white/90 backdrop-blur-md shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border border-white/40">
             <div class="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-sm border border-red-100">
                 <span class="text-3xl">🎓</span>
             </div>

@@ -73,16 +73,17 @@
     <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-zinc-100">
         <div class="container mx-auto px-4 py-3 flex items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-2">
-                <img src="{{ asset('images/Le Pas Fleuri.JPG') }}" alt="Logo" class="w-10 h-10 rounded-lg object-cover shadow-sm">
+                <img src="{{ asset('images/photo1.JPG') }}" alt="Logo" class="w-10 h-10 rounded-lg object-cover shadow-sm">
                 <span class="font-bold text-lg tracking-tight hidden md:block">Ça Respire Encore</span>
             </a>
 
             <nav class="hidden md:flex items-center gap-6">
                 <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'text-theatre-red' : '' }}">Accueil</a>
+                <a href="{{ route('pages.historique') }}" class="nav-link {{ request()->routeIs('pages.historique') ? 'text-theatre-red' : '' }}">Notre Histoire</a>
                 <a href="{{ route('events.index') }}" class="nav-link {{ request()->routeIs('events.index') ? 'text-theatre-red' : '' }}">Agenda</a>
                 <a href="{{ route('media.index') }}" class="nav-link {{ request()->routeIs('media.index') ? 'text-theatre-red' : '' }}">Médiathèque</a>
                 <a href="{{ route('media.ateliers') }}" class="nav-link {{ request()->routeIs('media.ateliers') ? 'text-theatre-red' : '' }}">Ateliers</a>
-                <a href="{{ route('home') }}#lieu" class="nav-link">Le Lieu</a>
+                <a href="{{ route('pages.lieu') }}" class="nav-link {{ request()->routeIs('pages.lieu') ? 'text-theatre-red' : '' }}">Le Lieu</a>
                 <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'text-theatre-red' : '' }}">Contact</a>
             </nav>
 
@@ -124,13 +125,13 @@
     </main>
 
     <footer class="bg-white/60 backdrop-blur-md border-t border-white/40 mt-20 py-12 relative z-10 shadow-[0_-10px_30px_rgba(0,0,0,0.02)]">
-        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12 text-center md:text-left">
             <div>
                 <h3 class="font-bold text-lg mb-4 flex items-center justify-center md:justify-start gap-2">
                     <span class="text-theatre-red">📍</span> Le Lieu
                 </h3>
                 <p class="text-zinc-600">Reillon<br>54450 Meurthe-et-Moselle</p>
-                <a href="{{ route('home') }}#lieu" class="text-theatre-red font-medium text-sm mt-2 inline-block">Voir le lieu →</a>
+                <a href="{{ route('pages.lieu') }}" class="text-theatre-red font-medium text-sm mt-2 inline-block">Voir le lieu →</a>
             </div>
             <div>
                 <h3 class="font-bold text-lg mb-4 flex items-center justify-center md:justify-start gap-2">
@@ -145,9 +146,17 @@
                 <p class="text-zinc-600">06 80 40 04 61<br>ca.respire.encore@orange.fr</p>
                 <a href="{{ route('contact') }}" class="text-theatre-red font-medium text-sm mt-2 inline-block">Nous écrire →</a>
             </div>
+            <div>
+                <h3 class="font-bold text-lg mb-4 flex items-center justify-center md:justify-start gap-2">
+                    <span class="text-theatre-red">🎟️</span> Partenaire
+                </h3>
+                <a href="https://www.billetreduc.com" target="_blank" class="block bg-white p-4 rounded-xl border border-zinc-100 shadow-sm hover:shadow-md transition-all">
+                    <img src="https://m.billetreduc.com/images/logo_billetreduc_v2.png" alt="Billet Reduc" class="h-6 mx-auto md:mx-0 grayscale hover:grayscale-0 transition-all">
+                </a>
+            </div>
         </div>
         <div class="container mx-auto px-4 mt-12 pt-8 border-t border-zinc-50 text-center text-zinc-400 text-sm">
-            &copy; {{ date('Y') }} Théâtre Ça Respire Encore. Tous droits réservés.
+            &copy; {{ date('Y') }} Théâtre Ça Respire Encore. <br class="md:hidden"> Architecture pour compagnies de théâtre.
         </div>
     </footer>
 

@@ -21,8 +21,13 @@ class PageController extends Controller
         return view('contact');
     }
 
-    public function ateliers()
+    public function lieu()
     {
-        return view('ateliers');
+        return view('pages.lieu');
+    }
+
+    public function historique()
+    {
+        return view('pages.historique');
     }
 }
