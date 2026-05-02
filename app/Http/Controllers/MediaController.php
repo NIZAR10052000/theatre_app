@@ -45,7 +45,13 @@ class MediaController extends Controller
     public function manage()
     {
         $medias = Media::where('user_id', auth()->id())->latest()->get();
-        $events = Event::where('user_id', auth()->id())->get();
+        
+        // L'admin peut lier à n'importe quel spectacle, la troupe seulement aux siens
+        if (auth()->user()->isAdmin()) {
+            $events = Event::all();
+        } else {
+            $events = Event::where('user_id', auth()->id())->get();
+        }
         
         return view('troupe.medias', compact('medias', 'events'));
     }
@@ -79,10 +85,11 @@ class MediaController extends Controller
             'file_path' => $filePath,
             'event_id' => $request->event_id,
             'user_id' => auth()->id(),
-            'status' => 'pending', // Validation admin requise
+            'status' => auth()->user()->isAdmin() ? 'published' : 'pending', // Auto-publication pour l'admin
         ]);
 
-        return back()->with('success', 'Votre média a été soumis pour validation par le modérateur.');
+        $message = auth()->user()->isAdmin() ? 'Média ajouté et publié avec succès !' : 'Votre média a été soumis pour validation par le modérateur.';
+        return back()->with('success', $message);
     }
 
     /**
@@ -94,5 +101,22 @@ class MediaController extends Controller
         $media->update(['status' => 'published']);
         
         return back()->with('success', 'Le média a été publié.');
+    }
+
+    /**
+     * Suppression d'un média
+     */
+    public function destroy($id)
+    {
+        $media = Media::findOrFail($id);
+        
+        // Supprimer le fichier physique s'il existe
+        if ($media->type !== 'video' && $media->file_path) {
+            Storage::disk('public')->delete($media->file_path);
+        }
+        
+        $media->delete();
+        
+        return back()->with('info', 'Média supprimé.');
     }
 }

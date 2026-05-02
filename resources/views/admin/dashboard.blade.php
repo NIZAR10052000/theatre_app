@@ -100,10 +100,15 @@
     </div>
 
     <!-- Section Modération Médias -->
-    <div class="bg-white rounded-3xl shadow-sm border border-zinc-100 overflow-hidden">
-        <div class="p-6 border-b border-zinc-100">
-            <h3 class="text-xl font-bold font-serif">Médias en attente de publication</h3>
-            <p class="text-zinc-500 text-sm">Photos, Vidéos et Documents soumis par les troupes.</p>
+    <div class="bg-white rounded-3xl shadow-sm border border-zinc-100 overflow-hidden" x-data="{ showMediaModal: false, mediaType: 'photo' }">
+        <div class="p-6 border-b border-zinc-100 flex justify-between items-center">
+            <div>
+                <h3 class="text-xl font-bold font-serif">Gestion des Médias</h3>
+                <p class="text-zinc-500 text-sm">Modérez les envois ou ajoutez vos propres contenus.</p>
+            </div>
+            <button @click="showMediaModal = true" class="bg-zinc-900 text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-black transition-all">
+                ➕ Ajouter un média
+            </button>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
@@ -126,10 +131,17 @@
                         <td class="px-6 py-4 text-sm text-zinc-500 uppercase tracking-widest text-[10px] font-black">{{ $media->type }}</td>
                         <td class="px-6 py-4 text-right">
                             <div class="flex justify-end gap-2">
-                                <a href="{{ $media->type === 'video' ? $media->file_path : asset('storage/' . $media->file_path) }}" target="_blank" class="text-zinc-400 hover:text-zinc-600 px-3 py-2">👁️</a>
+                                @if($media->file_path)
+                                    <a href="{{ $media->type === 'video' ? $media->file_path : asset('storage/' . $media->file_path) }}" target="_blank" class="text-zinc-400 hover:text-zinc-600 px-3 py-2" title="Voir le média">👁️</a>
+                                @endif
                                 <form action="{{ route('admin.approve-media', $media->id) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all">Approuver</button>
+                                </form>
+                                <form action="{{ route('admin.delete-media', $media->id) }}" method="POST" onsubmit="return confirm('Supprimer ce média ?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-zinc-300 hover:text-red-600 px-3 py-2">🗑️</button>
                                 </form>
                             </div>
                         </td>
@@ -280,5 +292,69 @@
         </div>
     </div>
 
+    <!-- Modal Ajout Média Admin -->
+    <div x-show="showMediaModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-zinc-900/60 backdrop-blur-sm" @click="showMediaModal = false"></div>
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-xl relative z-10 overflow-hidden">
+            <div class="p-8 border-b border-zinc-100 flex justify-between items-center">
+                <h3 class="text-2xl font-bold font-serif">Ajouter un Média (Admin)</h3>
+                <button @click="showMediaModal = false" class="text-zinc-400 hover:text-zinc-600">×</button>
+            </div>
+            
+            <form action="{{ route('troupe.medias.store') }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
+                @csrf
+                <div>
+                    <label class="block text-sm font-bold text-zinc-700 mb-2">Titre du média</label>
+                    <input type="text" name="title" required class="w-full px-4 py-3 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-zinc-800 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-zinc-700 mb-2">Description détaillée</label>
+                    <textarea name="description" rows="3" class="w-full px-4 py-3 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-zinc-800 outline-none" placeholder="Décrivez le contenu..."></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-bold text-zinc-700 mb-2">Type</label>
+                        <select name="type" x-model="mediaType" class="w-full px-4 py-3 border border-zinc-200 rounded-xl">
+                            <option value="photo">Photo</option>
+                            <option value="video">Vidéo (URL)</option>
+                            <option value="document">Document (PDF)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-zinc-700 mb-2">Catégorie</label>
+                        <select name="category" class="w-full px-4 py-3 border border-zinc-200 rounded-xl">
+                            <option value="spectacle">Spectacle</option>
+                            <option value="tuto">Tutoriel</option>
+                            <option value="formation">Atelier / Formation</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div x-show="mediaType !== 'video'">
+                    <label class="block text-sm font-bold text-zinc-700 mb-2">Fichier</label>
+                    <input type="file" name="file" class="w-full p-2 border border-zinc-200 rounded-xl bg-zinc-50">
+                </div>
+
+                <div x-show="mediaType === 'video'">
+                    <label class="block text-sm font-bold text-zinc-700 mb-2">URL de la vidéo (YouTube/Vimeo)</label>
+                    <input type="url" name="video_url" class="w-full px-4 py-3 border border-zinc-200 rounded-xl" placeholder="https://...">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold text-zinc-700 mb-2">Lier à un spectacle</label>
+                    <select name="event_id" class="w-full px-4 py-3 border border-zinc-200 rounded-xl">
+                        <option value="">-- Aucun lien --</option>
+                        @foreach($allEvents as $event)
+                            <option value="{{ $event->id }}">{{ $event->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full bg-zinc-900 text-white py-4 rounded-2xl font-bold hover:bg-black transition-all">Publier immédiatement</button>
+            </form>
+        </div>
+    </div>
 </div>
 @endsection

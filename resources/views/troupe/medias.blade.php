@@ -85,6 +85,11 @@
                     <input type="text" name="title" required class="w-full px-4 py-3 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-zinc-800 outline-none" placeholder="Ex: Trailer de Hamlet">
                 </div>
 
+                <div>
+                    <label class="block text-sm font-bold text-zinc-700 mb-2">Description détaillée</label>
+                    <textarea name="description" rows="3" class="w-full px-4 py-3 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-zinc-800 outline-none" placeholder="Décrivez ce que représente ce média..."></textarea>
+                </div>
+
                 <div class="grid grid-cols-2 gap-6">
                     <div>
                         <label class="block text-sm font-bold text-zinc-700 mb-2">Type</label>
