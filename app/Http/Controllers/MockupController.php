@@ -10,8 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class MockupController extends Controller
 {
-    public function login()
+    public function login(Request $request)
     {
+        if ($request->has('redirect')) {
+            session(['url.intended' => $request->redirect]);
+        }
         return view('mockups.login');
     }
 
@@ -21,10 +24,18 @@ class MockupController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
+            
+            // Priorité absolue aux tableaux de bord pour l'Admin et les Troupes
             if ($user->isAdmin()) {
                 return redirect()->route('admin.dashboard');
             }
-            return redirect()->route('mockups.troupe-dashboard');
+            
+            if ($user->isTroupe()) {
+                return redirect()->route('mockups.troupe-dashboard');
+            }
+
+            // Seuls les "utilisateurs normaux" reviennent à la page où ils étaient (ex: l'Agenda)
+            return redirect()->intended(route('home'));
         }
 
         return back()->withErrors(['email' => 'Identifiants incorrects.']);

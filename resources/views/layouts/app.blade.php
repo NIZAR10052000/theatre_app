@@ -87,8 +87,22 @@
 
             <div class="flex items-center gap-4">
                 <div class="hidden lg:flex items-center border-r border-zinc-200 pr-4 mr-2 gap-3">
-                    <a href="{{ route('mockups.login') }}" class="text-sm font-bold text-zinc-500 hover:text-theatre-red transition-colors">Connexion</a>
-                    <a href="{{ route('mockups.troupe-dashboard') }}" class="text-sm font-bold text-white bg-zinc-800 px-4 py-1.5 rounded-lg hover:bg-black transition-all">Troupes</a>
+                    @auth
+                        <div class="flex items-center gap-4">
+                            @if(auth()->user()->isAdmin())
+                                <a href="{{ route('admin.dashboard') }}" class="text-xs font-bold text-white bg-zinc-800 px-4 py-1.5 rounded-lg hover:bg-black transition-all">Admin</a>
+                            @elseif(auth()->user()->isTroupe() && auth()->user()->isVerified())
+                                <a href="{{ route('mockups.troupe-dashboard') }}" class="text-xs font-bold text-white bg-zinc-800 px-4 py-1.5 rounded-lg hover:bg-black transition-all">Mon Espace</a>
+                            @endif
+                            
+                            <form action="{{ route('logout') }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="text-sm font-bold text-zinc-500 hover:text-theatre-red transition-colors">Déconnexion</button>
+                            </form>
+                        </div>
+                    @else
+                        <a href="{{ route('mockups.login') }}" class="text-sm font-bold text-zinc-500 hover:text-theatre-red transition-colors">Connexion</a>
+                    @endauth
                 </div>
                 <a href="{{ route('events.index') }}" class="btn-red">Réserver</a>
                 <button class="md:hidden text-zinc-800">

@@ -134,7 +134,11 @@
                                                         <span class="text-theatre-red">📍</span>
                                                         {{ $event->location }}
                                                     </div>
-                                                    <button @click="showReservationModal = true; selectedEventTitle = '{{ addslashes($event->title) }}'; step = 1; quantity = 1;" class="text-theatre-red font-black text-xs hover:underline active:scale-95 transition-transform uppercase tracking-widest">Réserver →</button>
+                                                    @auth
+                                                        <button @click="showReservationModal = true; selectedEventTitle = '{{ addslashes($event->title) }}'; step = 1; quantity = 1;" class="text-theatre-red font-black text-xs hover:underline active:scale-95 transition-transform uppercase tracking-widest">Réserver →</button>
+                                                    @else
+                                                        <a href="{{ route('mockups.login') }}" class="text-theatre-red font-black text-xs hover:underline active:scale-95 transition-transform uppercase tracking-widest">Réserver →</a>
+                                                    @endauth
                                                 </div>
                                             </div>
                                         </div>
@@ -199,34 +203,17 @@
                     <!-- Étape 1 : Informations -->
                     <div x-show="step === 1" x-transition.opacity>
                         <form class="space-y-4" @submit.prevent="step = 2">
-                            <div>
-                                <label class="block text-sm font-semibold text-zinc-700 mb-1">Nom complet</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            @auth
+                                <div class="bg-zinc-50 rounded-2xl p-4 mb-6 border border-zinc-100 flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm text-xl">👤</div>
+                                    <div>
+                                        <div class="text-xs text-zinc-400 font-bold uppercase tracking-widest">Réservation pour</div>
+                                        <div class="font-bold text-zinc-900">{{ auth()->user()->name }}</div>
+                                        <div class="text-xs text-zinc-500">{{ auth()->user()->email }}</div>
                                     </div>
-                                    <input type="text" required class="w-full pl-10 pr-3 py-3 border border-zinc-200 rounded-xl bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-theatre-red outline-none transition-all" placeholder="Jean Dupont">
                                 </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-zinc-700 mb-1">Email</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                    </div>
-                                    <input type="email" required class="w-full pl-10 pr-3 py-3 border border-zinc-200 rounded-xl bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-theatre-red outline-none transition-all" placeholder="jean@exemple.com">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-zinc-700 mb-1">Téléphone</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400">
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                                    </div>
-                                    <input type="tel" class="w-full pl-10 pr-3 py-3 border border-zinc-200 rounded-xl bg-zinc-50 focus:bg-white focus:ring-2 focus:ring-theatre-red outline-none transition-all" placeholder="06 12 34 56 78">
-                                </div>
-                            </div>
-                            
+                            @endauth
+
                             <div>
                                 <label class="block text-sm font-semibold text-zinc-700 mb-2">Nombre de billets</label>
                                 <div class="flex items-center gap-4">
