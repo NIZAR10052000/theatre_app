@@ -106,9 +106,7 @@
                 <h3 class="text-xl font-bold font-serif">Gestion des Médias</h3>
                 <p class="text-zinc-500 text-sm">Modérez les envois ou ajoutez vos propres contenus.</p>
             </div>
-            <button @click="showMediaModal = true" class="bg-zinc-900 text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-black transition-all">
-                ➕ Ajouter un média
-            </button>
+            
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">

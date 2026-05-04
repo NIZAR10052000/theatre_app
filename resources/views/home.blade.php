@@ -59,19 +59,19 @@
 <!-- Categories Bar -->
 <section class="container mx-auto px-4 -mt-24 relative z-20 mb-12">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
-        <a href="{{ route('events.index', ['category' => 'Spectacles']) }}" class="flex flex-col items-center justify-center p-6 rounded-[2rem] bg-white/90 backdrop-blur-md shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border border-white/40">
+        <a href="{{ route('events.index', ['category' => 'spectacle']) }}" class="flex flex-col items-center justify-center p-6 rounded-[2rem] bg-white/90 backdrop-blur-md shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border border-white/40">
             <div class="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-sm border border-red-100">
                 <span class="text-3xl">🎭</span>
             </div>
             <span class="font-bold text-zinc-800">Spectacles</span>
         </a>
-        <a href="{{ route('events.index', ['category' => 'Résidences']) }}" class="flex flex-col items-center justify-center p-6 rounded-[2rem] bg-white/90 backdrop-blur-md shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border border-white/40">
+        <a href="{{ route('events.index', ['category' => 'residence']) }}" class="flex flex-col items-center justify-center p-6 rounded-[2rem] bg-white/90 backdrop-blur-md shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border border-white/40">
             <div class="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-sm border border-red-100">
                 <span class="text-3xl">👥</span>
             </div>
             <span class="font-bold text-zinc-800">Résidences</span>
         </a>
-        <a href="{{ route('events.index', ['category' => 'Amuse-gueules']) }}" class="flex flex-col items-center justify-center p-6 rounded-[2rem] bg-white/90 backdrop-blur-md shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border border-white/40">
+        <a href="{{ route('events.index', ['category' => 'amuse-gueule']) }}" class="flex flex-col items-center justify-center p-6 rounded-[2rem] bg-white/90 backdrop-blur-md shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group border border-white/40">
             <div class="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-sm border border-red-100">
                 <span class="text-3xl">🍷</span>
             </div>

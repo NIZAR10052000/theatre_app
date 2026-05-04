@@ -8,6 +8,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeUserMail;
+use App\Mail\WelcomeTroupeMail;
+
 class MockupController extends Controller
 {
     public function login(Request $request)
@@ -70,6 +74,18 @@ class MockupController extends Controller
             'role' => $request->role === 'troupe' ? 'troupe' : 'user',
             'is_verified' => ($request->role === 'troupe' ? false : true),
         ]);
+
+        // Envoi de l'email de bienvenue
+        try {
+            if ($user->isTroupe()) {
+                Mail::to($user->email)->send(new WelcomeTroupeMail($user));
+            } else {
+                Mail::to($user->email)->send(new WelcomeUserMail($user));
+            }
+        } catch (\Exception $e) {
+            // On ignore l'erreur si le serveur mail n'est pas configuré (mockup)
+            \Log::error("Erreur envoi email bienvenue: " . $e->getMessage());
+        }
 
         Auth::login($user);
 
