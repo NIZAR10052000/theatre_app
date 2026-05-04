@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Event;
-
 use App\Models\Media;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TroupeValidatedMail;
 
 class AdminController extends Controller
 {
@@ -76,8 +77,8 @@ class AdminController extends Controller
         $user->is_verified = true;
         $user->save();
         
-        // Simuler l'envoi d'un email
-        // Mail::to($user->email)->send(new AccountVerified($user));
+        // Envoi de l'email de confirmation à la troupe
+        Mail::to($user->email)->send(new TroupeValidatedMail($user));
 
         return back()->with('success', 'Troupe validée avec succès !');
     }
