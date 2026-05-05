@@ -28,4 +28,18 @@ class EventController extends Controller
 
         return view('events.index', compact('events', 'periods', 'categories'));
     }
+
+    public function show($id)
+    {
+        $event = Event::findOrFail($id);
+        
+        // On récupère aussi quelques spectacles suggérés (même catégorie)
+        $suggestions = Event::where('category', $event->category)
+                            ->where('id', '!=', $event->id)
+                            ->where('status', 'published')
+                            ->limit(3)
+                            ->get();
+
+        return view('events.show', compact('event', 'suggestions'));
+    }
 }

@@ -26,8 +26,13 @@ class AdminController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
             'category' => 'required|string',
             'description' => 'required|string',
+            'price' => 'nullable|string|max:255',
+            'duration' => 'nullable|string|max:255',
+            'booking_url' => 'nullable|url|max:255',
+            'credits' => 'nullable|string',
             'event_date' => 'required|date',
             'event_time' => 'nullable|string',
             'location' => 'required|string',
@@ -68,8 +73,13 @@ class AdminController extends Controller
         
         $data = $request->validate([
             'title' => 'required|string|max:255',
+            'subtitle' => 'nullable|string|max:255',
             'category' => 'required|string',
             'description' => 'required|string',
+            'price' => 'nullable|string|max:255',
+            'duration' => 'nullable|string|max:255',
+            'booking_url' => 'nullable|url|max:255',
+            'credits' => 'nullable|string',
             'event_date' => 'required|date',
             'event_time' => 'nullable|string',
             'location' => 'required|string',

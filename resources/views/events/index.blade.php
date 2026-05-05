@@ -144,8 +144,10 @@
                                                     @endif
                                                 </div>
                                                 
-                                                <h5 class="text-2xl font-serif font-black mb-3 group-hover:text-theatre-red transition-colors duration-300 leading-tight">
-                                                    {{ $event->title }}
+                                                <h5 class="text-2xl font-serif font-black mb-3 transition-colors duration-300 leading-tight">
+                                                    <a href="{{ route('events.show', $event->id) }}" class="hover:text-theatre-red transition-colors">
+                                                        {{ $event->title }}
+                                                    </a>
                                                 </h5>
                                                 
                                                 <p class="text-zinc-500 text-sm leading-relaxed mb-4 italic">
