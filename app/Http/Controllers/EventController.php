@@ -11,7 +11,7 @@ class EventController extends Controller
     {
         $query = Event::with('media')
                      ->where('status', 'published')
-                     ->orderBy('event_date', 'asc');
+                     ->orderBy('event_date', 'desc');
 
         if ($request->has('period') && $request->period != 'Toutes les périodes') {
             $query->where('period', $request->period);
