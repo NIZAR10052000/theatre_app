@@ -109,6 +109,29 @@
                                                 @endif
                                             </div>
 
+                                            <!-- Images Carousel (if any) -->
+                                            @if($event->images && count($event->images) > 0)
+                                            <div class="w-full md:w-64 h-48 md:h-auto relative bg-zinc-900 overflow-hidden shrink-0" x-data="{ activeIndex: 0, images: {{ json_encode($event->images) }} }">
+                                                <template x-for="(img, index) in images" :key="index">
+                                                    <img x-show="activeIndex === index" x-transition.opacity.duration.500ms :src="'/storage/' + img" class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" alt="Image du spectacle">
+                                                </template>
+                                                
+                                                @if(count($event->images) > 1)
+                                                    <button @click.prevent="activeIndex = activeIndex === 0 ? images.length - 1 : activeIndex - 1" class="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 hover:bg-theatre-red text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-all shadow-lg z-10 text-xs">
+                                                        &#10094;
+                                                    </button>
+                                                    <button @click.prevent="activeIndex = activeIndex === images.length - 1 ? 0 : activeIndex + 1" class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 hover:bg-theatre-red text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-all shadow-lg z-10 text-xs">
+                                                        &#10095;
+                                                    </button>
+                                                    <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+                                                        <template x-for="(img, index) in images" :key="index">
+                                                            <div class="w-1.5 h-1.5 rounded-full transition-all" :class="activeIndex === index ? 'bg-theatre-red scale-125' : 'bg-white/50'"></div>
+                                                        </template>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            @endif
+
                                             <div class="p-8 flex-1 flex flex-col justify-center">
                                                 <div class="flex items-center gap-3 mb-4">
                                                     <span class="px-2.5 py-0.5 bg-zinc-100 text-zinc-500 rounded text-[9px] font-black uppercase tracking-[0.2em]">

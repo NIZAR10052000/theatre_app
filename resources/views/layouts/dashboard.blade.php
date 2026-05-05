@@ -34,10 +34,18 @@
         
         <div class="p-4">
             <div class="flex items-center gap-3 p-3 bg-zinc-800 rounded-xl mb-6">
-                <div class="w-10 h-10 rounded-lg bg-zinc-700 flex items-center justify-center text-xl">🎭</div>
-                <div>
-                    <div class="font-bold text-sm">Cie Les Passeurs</div>
-                    <div class="text-xs text-zinc-400">Troupe Validée</div>
+                <div class="w-10 h-10 rounded-lg {{ auth()->user()->isAdmin() ? 'bg-theatre-red text-white' : 'bg-zinc-700' }} flex items-center justify-center text-xl">
+                    {{ auth()->user()->isAdmin() ? '👑' : '🎭' }}
+                </div>
+                <div class="overflow-hidden">
+                    <div class="font-bold text-sm truncate" title="{{ auth()->user()->name }}">{{ auth()->user()->name }}</div>
+                    @if(auth()->user()->isAdmin())
+                        <div class="text-xs text-zinc-400">Direction / Admin</div>
+                    @else
+                        <div class="text-xs {{ auth()->user()->is_verified ? 'text-green-400' : 'text-orange-400' }}">
+                            {{ auth()->user()->is_verified ? 'Compagnie Validée' : 'En attente de validation' }}
+                        </div>
+                    @endif
                 </div>
             </div>
 

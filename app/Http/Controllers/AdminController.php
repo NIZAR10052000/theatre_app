@@ -32,10 +32,20 @@ class AdminController extends Controller
             'event_time' => 'nullable|string',
             'location' => 'required|string',
             'capacity' => 'required|integer',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
         $data['status'] = auth()->user()->isAdmin() ? 'published' : 'pending';
         $data['user_id'] = auth()->id();
+
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('events/images', 'public');
+                $imagePaths[] = $path;
+            }
+        }
+        $data['images'] = $imagePaths;
 
         $event = Event::create($data);
 
@@ -65,7 +75,17 @@ class AdminController extends Controller
             'location' => 'required|string',
             'capacity' => 'required|integer',
             'status' => 'required|in:pending,published,rejected',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
+
+        $imagePaths = $event->images ?? [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('events/images', 'public');
+                $imagePaths[] = $path;
+            }
+        }
+        $data['images'] = $imagePaths;
 
         $event->update($data);
 

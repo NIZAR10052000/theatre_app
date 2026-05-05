@@ -78,11 +78,40 @@
                 </thead>
                 <tbody class="divide-y divide-zinc-100">
                     @forelse($pendingEvents as $event)
-                    <tr class="hover:bg-zinc-50 transition-colors">
-                        <td class="px-6 py-4 font-bold text-zinc-900">{{ $event->title }}</td>
-                        <td class="px-6 py-4 text-sm text-zinc-600">{{ $event->user ? $event->user->name : 'N/A' }}</td>
-                        <td class="px-6 py-4 text-sm text-zinc-500">{{ \Carbon\Carbon::parse($event->event_date)->format('d/m/Y') }}</td>
-                        <td class="px-6 py-4 text-right">
+                    <tr class="hover:bg-zinc-50 transition-colors" x-data="{ expanded: false }">
+                        <td class="px-6 py-4 font-bold text-zinc-900">
+                            {{ $event->title }}
+                            <div class="mt-2 text-xs">
+                                <button @click="expanded = !expanded" class="text-zinc-500 hover:text-theatre-red font-medium underline flex items-center gap-1">
+                                    <span x-text="expanded ? 'Masquer les détails' : 'Voir les détails et photos'"></span>
+                                </button>
+                            </div>
+                            
+                            <!-- Expandable content -->
+                            <div x-show="expanded" x-transition class="mt-4 p-4 bg-zinc-100 rounded-xl max-w-lg">
+                                <p class="text-sm text-zinc-600 mb-4 italic">"{{ $event->description }}"</p>
+                                
+                                @if($event->images && count($event->images) > 0)
+                                <div class="relative w-full h-48 bg-zinc-900 rounded-lg overflow-hidden" x-data="{ activeIndex: 0, images: {{ json_encode($event->images) }} }">
+                                    <template x-for="(img, index) in images" :key="index">
+                                        <img x-show="activeIndex === index" x-transition.opacity.duration.500ms :src="'/storage/' + img" class="absolute inset-0 w-full h-full object-cover" alt="Photo">
+                                    </template>
+                                    
+                                    @if(count($event->images) > 1)
+                                        <button @click.prevent="activeIndex = activeIndex === 0 ? images.length - 1 : activeIndex - 1" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 bg-black/50 hover:bg-theatre-red text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-all text-[10px]">
+                                            &#10094;
+                                        </button>
+                                        <button @click.prevent="activeIndex = activeIndex === images.length - 1 ? 0 : activeIndex + 1" class="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 bg-black/50 hover:bg-theatre-red text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-all text-[10px]">
+                                            &#10095;
+                                        </button>
+                                    @endif
+                                </div>
+                                @endif
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-zinc-600 align-top">{{ $event->user ? $event->user->name : 'N/A' }}</td>
+                        <td class="px-6 py-4 text-sm text-zinc-500 align-top">{{ \Carbon\Carbon::parse($event->event_date)->format('d/m/Y') }}</td>
+                        <td class="px-6 py-4 text-right align-top">
                             <form action="{{ route('admin.approve-event', $event->id) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="bg-theatre-red hover:bg-red-800 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all">Publier</button>
@@ -223,7 +252,7 @@
                     <button @click="showEventModal = false" class="text-zinc-400 hover:text-zinc-600 text-2xl">×</button>
                 </div>
                 
-                <form :action="isEditing ? '{{ url('admin/events') }}/' + eventData.id : '{{ route('admin.events.store') }}'" method="POST" class="p-8 space-y-6 overflow-y-auto">
+                <form :action="isEditing ? '{{ url('admin/events') }}/' + eventData.id : '{{ route('admin.events.store') }}'" method="POST" enctype="multipart/form-data" class="p-8 space-y-6 overflow-y-auto">
                     @csrf
                     <template x-if="isEditing">
                         <input type="hidden" name="_method" value="PUT">
@@ -246,6 +275,10 @@
                         <div class="col-span-2">
                             <label class="block text-sm font-bold text-zinc-700 mb-2">Description</label>
                             <textarea name="description" x-model="eventData.description" required rows="3" class="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900"></textarea>
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-bold text-zinc-700 mb-2">Photos du spectacle (Sélectionnez plusieurs si besoin)</label>
+                            <input type="file" name="images[]" multiple accept="image/*" class="w-full px-4 py-3 border border-zinc-200 rounded-xl outline-none focus:ring-2 focus:ring-zinc-900 bg-zinc-50">
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-zinc-700 mb-2">Date</label>

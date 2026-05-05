@@ -15,6 +15,7 @@ class Event extends Model
         'category',
         'period',
         'description',
+        'images',
         'event_date',
         'event_time',
         'location',
@@ -23,6 +24,10 @@ class Event extends Model
         'is_reported',
         'status',
         'user_id'
+    ];
+
+    protected $casts = [
+        'images' => 'array',
     ];
 
     //Les relations
