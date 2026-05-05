@@ -138,9 +138,7 @@
                         </div>
                     </div>
                 @endif
-                <div class="w-8 h-8 rounded-full bg-zinc-200 border-2 border-white shadow-sm overflow-hidden">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'User') }}&background=18181b&color=fff" alt="Avatar">
-                </div>
+                
             </div>
         </header>
 
