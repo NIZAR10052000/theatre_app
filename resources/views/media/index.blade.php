@@ -18,11 +18,11 @@
     </div>
 </section>
 
-<section class="py-20 bg-zinc-50">
+<section class="py-20 bg-zinc-50" x-data="{ showModal: false, activeMedia: null }">
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             @forelse($medias as $media)
-                <div class="bg-white rounded-[2.5rem] shadow-sm border border-zinc-100 overflow-hidden group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                <div @click="activeMedia = {{ json_encode($media) }}; showModal = true" class="bg-white rounded-[2.5rem] shadow-sm border border-zinc-100 overflow-hidden group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer">
                     <!-- Media Preview -->
                     <div class="aspect-video relative overflow-hidden bg-zinc-100">
                         @if($media->type === 'video')
@@ -31,7 +31,10 @@
                                     <svg class="w-6 h-6 text-theatre-red fill-current" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"/></svg>
                                 </div>
                             </div>
-                            <img src="https://img.youtube.com/vi/{{ Str::afterLast($media->file_path, 'v=') }}/maxresdefault.jpg" alt="Thumbnail" class="w-full h-full object-cover">
+                            @php
+                                $videoId = Str::contains($media->file_path, 'v=') ? Str::afterLast($media->file_path, 'v=') : Str::afterLast($media->file_path, '/');
+                            @endphp
+                            <img src="https://img.youtube.com/vi/{{ $videoId }}/maxresdefault.jpg" alt="Thumbnail" class="w-full h-full object-cover">
                         @elseif($media->type === 'photo')
                             <img src="{{ asset('storage/' . $media->file_path) }}" alt="{{ $media->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         @else
@@ -63,15 +66,16 @@
                                 </div>
                             </div>
                             
-                            @if($media->type === 'video')
-                                <a href="{{ $media->file_path }}" target="_blank" class="w-10 h-10 rounded-full border border-zinc-100 flex items-center justify-center hover:bg-theatre-red hover:text-white transition-all shadow-sm">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                                </a>
-                            @else
-                                <a href="{{ asset('storage/' . $media->file_path) }}" download class="w-10 h-10 rounded-full border border-zinc-100 flex items-center justify-center hover:bg-theatre-red hover:text-white transition-all shadow-sm">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M7 10l5 5m0 0l5-5m-5 5V3"/></svg>
-                                </a>
-                            @endif
+                            <div class="flex items-center gap-2">
+                                <button class="w-10 h-10 rounded-full border border-zinc-100 flex items-center justify-center hover:bg-zinc-900 hover:text-white transition-all shadow-sm">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                </button>
+                                @if($media->type !== 'video')
+                                    <a @click.stop href="{{ asset('storage/' . $media->file_path) }}" download class="w-10 h-10 rounded-full border border-zinc-100 flex items-center justify-center hover:bg-theatre-red hover:text-white transition-all shadow-sm">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M7 10l5 5m0 0l5-5m-5 5V3"/></svg>
+                                    </a>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -82,6 +86,56 @@
                     <p class="text-zinc-400">Revenez bientôt pour découvrir de nouveaux contenus !</p>
                 </div>
             @endforelse
+        </div>
+    </div>
+
+    <!-- Modal Visionneuse -->
+    <div x-show="showModal" 
+         x-transition.opacity 
+         style="display: none;" 
+         class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-zinc-900/95 backdrop-blur-xl">
+        
+        <button @click="showModal = false" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+
+        <div class="w-full max-w-6xl max-h-full flex flex-col items-center" @click.away="showModal = false">
+            <template x-if="activeMedia">
+                <div class="w-full flex flex-col lg:flex-row gap-10 items-center">
+                    <!-- Media Content -->
+                    <div class="w-full lg:w-3/4 aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                        <template x-if="activeMedia.type === 'photo'">
+                            <img :src="'/storage/' + activeMedia.file_path" class="w-full h-full object-contain">
+                        </template>
+                        <template x-if="activeMedia.type === 'video'">
+                            <iframe :src="'https://www.youtube.com/embed/' + (activeMedia.file_path.includes('v=') ? activeMedia.file_path.split('v=')[1].split('&')[0] : activeMedia.file_path.split('/').pop())" 
+                                    class="w-full h-full" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                            </iframe>
+                        </template>
+                        <template x-if="activeMedia.type === 'document'">
+                            <iframe :src="'/storage/' + activeMedia.file_path" class="w-full h-full"></iframe>
+                        </template>
+                    </div>
+
+                    <!-- Info Sidebar -->
+                    <div class="w-full lg:w-1/4 text-white">
+                        <span class="inline-block px-3 py-1 bg-theatre-red text-[9px] font-black uppercase tracking-[0.2em] rounded-full mb-4" x-text="activeMedia.category"></span>
+                        <h2 class="text-4xl font-serif font-bold mb-6" x-text="activeMedia.title"></h2>
+                        <p class="text-zinc-400 leading-relaxed italic mb-8" x-text="activeMedia.description || 'Pas de description.'"></p>
+                        
+                        <div class="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/10">
+                            <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center">🎭</div>
+                            <div>
+                                <div class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Proposé par</div>
+                                <div class="font-bold text-sm" x-text="activeMedia.user ? activeMedia.user.name : 'Théâtre Pas Fleuri'"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
         </div>
     </div>
 </section>
