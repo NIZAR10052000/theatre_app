@@ -37,7 +37,16 @@ class AdminController extends Controller
         $data['status'] = auth()->user()->isAdmin() ? 'published' : 'pending';
         $data['user_id'] = auth()->id();
 
-        Event::create($data);
+        $event = Event::create($data);
+
+        if (!auth()->user()->isAdmin()) {
+            $admins = User::where('role', 'admin')->get();
+            \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\AdminAlert(
+                'Nouveau spectacle à valider: ' . $event->title,
+                'event',
+                route('admin.dashboard')
+            ));
+        }
 
         $message = auth()->user()->isAdmin() ? 'Événement créé et publié !' : 'Votre spectacle a été soumis pour validation par le modérateur.';
         return back()->with('success', $message);
@@ -98,5 +107,13 @@ class AdminController extends Controller
         $event->save();
 
         return back()->with('success', 'Événement publié !');
+    }
+
+    public function markNotificationAsRead($id)
+    {
+        $notification = auth()->user()->notifications()->findOrFail($id);
+        $notification->markAsRead();
+        
+        return redirect($notification->data['url'] ?? route('admin.dashboard'));
     }
 }

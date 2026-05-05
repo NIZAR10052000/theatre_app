@@ -77,7 +77,7 @@ class MediaController extends Controller
             $filePath = $request->video_url; // Pour les vidéos, on stocke souvent l'URL YouTube/Vimeo
         }
 
-        Media::create([
+        $media = Media::create([
             'title' => $request->title,
             'description' => $request->description,
             'type' => $request->type,
@@ -87,6 +87,15 @@ class MediaController extends Controller
             'user_id' => auth()->id(),
             'status' => auth()->user()->isAdmin() ? 'published' : 'pending', // Auto-publication pour l'admin
         ]);
+
+        if (!auth()->user()->isAdmin()) {
+            $admins = \App\Models\User::where('role', 'admin')->get();
+            \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\AdminAlert(
+                'Nouveau média à valider: ' . $media->title,
+                'media',
+                route('admin.dashboard')
+            ));
+        }
 
         $message = auth()->user()->isAdmin() ? 'Média ajouté et publié avec succès !' : 'Votre média a été soumis pour validation par le modérateur.';
         return back()->with('success', $message);

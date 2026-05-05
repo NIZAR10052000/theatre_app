@@ -43,6 +43,9 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     // Gestion Médias Admin
     Route::post('/approve-media/{id}', [App\Http\Controllers\MediaController::class, 'approve'])->name('admin.approve-media');
     Route::delete('/media/{id}', [App\Http\Controllers\MediaController::class, 'destroy'])->name('admin.delete-media');
+
+    // Notifications
+    Route::get('/notifications/{id}/read', [App\Http\Controllers\AdminController::class, 'markNotificationAsRead'])->name('admin.notifications.read');
 });
 
 // Routes Troupe (Espace Atelier)

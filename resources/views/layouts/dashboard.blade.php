@@ -91,12 +91,47 @@
             </button>
             <h1 class="text-xl font-bold font-serif hidden lg:block">@yield('header_title', 'Dashboard')</h1>
             <div class="flex items-center gap-4 ml-auto">
-                <button class="relative text-zinc-400 hover:text-zinc-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    <span class="absolute top-0 right-0 w-2 h-2 bg-theatre-red rounded-full"></span>
-                </button>
+                @if(auth()->check() && auth()->user()->isAdmin())
+                    <div x-data="{ showNotifications: false }" class="relative">
+                        <button @click="showNotifications = !showNotifications" @click.away="showNotifications = false" class="relative text-zinc-400 hover:text-zinc-600 focus:outline-none transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                            @if(auth()->user()->unreadNotifications->count() > 0)
+                                <span class="absolute -top-1 -right-1 w-4 h-4 bg-theatre-red text-white text-[9px] font-bold rounded-full flex items-center justify-center">{{ auth()->user()->unreadNotifications->count() }}</span>
+                            @endif
+                        </button>
+                        
+                        <!-- Notifications Dropdown -->
+                        <div x-show="showNotifications" style="display: none;" class="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-xl border border-zinc-100 overflow-hidden z-50 origin-top-right transition-all">
+                            <div class="bg-zinc-50 px-4 py-3 border-b border-zinc-100 flex justify-between items-center">
+                                <h4 class="font-bold text-zinc-800 text-sm">Notifications</h4>
+                                <span class="text-xs text-zinc-500 font-medium">{{ auth()->user()->unreadNotifications->count() }} non lue(s)</span>
+                            </div>
+                            <div class="max-h-80 overflow-y-auto">
+                                @forelse(auth()->user()->unreadNotifications as $notification)
+                                    <a href="{{ route('admin.notifications.read', $notification->id) }}" class="block px-4 py-3 hover:bg-zinc-50 border-b border-zinc-50 transition-colors">
+                                        <div class="flex items-start gap-3">
+                                            <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 {{ $notification->data['type'] === 'troupe' ? 'bg-blue-100 text-blue-600' : ($notification->data['type'] === 'event' ? 'bg-green-100 text-green-600' : 'bg-orange-100 text-orange-600') }}">
+                                                @if($notification->data['type'] === 'troupe') 👥 
+                                                @elseif($notification->data['type'] === 'event') 🎭 
+                                                @else 🖼️ @endif
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-zinc-800 font-medium leading-tight">{{ $notification->data['message'] }}</p>
+                                                <span class="text-xs text-zinc-400 mt-1 block">{{ $notification->created_at->diffForHumans() }}</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                @empty
+                                    <div class="px-4 py-6 text-center text-zinc-400 text-sm">
+                                        Aucune nouvelle notification.
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <div class="w-8 h-8 rounded-full bg-zinc-200 border-2 border-white shadow-sm overflow-hidden">
-                    <img src="https://ui-avatars.com/api/?name=Cie+L&background=18181b&color=fff" alt="Avatar">
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'User') }}&background=18181b&color=fff" alt="Avatar">
                 </div>
             </div>
         </header>

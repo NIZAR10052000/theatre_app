@@ -79,6 +79,14 @@ class MockupController extends Controller
         try {
             if ($user->isTroupe()) {
                 Mail::to($user->email)->send(new WelcomeTroupeMail($user));
+                
+                // Notifier les admins de la nouvelle inscription
+                $admins = User::where('role', 'admin')->get();
+                \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\AdminAlert(
+                    'Nouvelle troupe en attente de validation: ' . $user->name,
+                    'troupe',
+                    route('admin.dashboard')
+                ));
             } else {
                 Mail::to($user->email)->send(new WelcomeUserMail($user));
             }
