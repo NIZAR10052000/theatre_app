@@ -65,16 +65,23 @@ class MediaController extends Controller
             'title' => 'required|string|max:255',
             'type' => 'required|in:photo,video,document',
             'category' => 'required|in:spectacle,tuto,formation',
-            'file' => 'required_if:type,photo,document|file|max:10240', // 10MB max
-            'video_url' => 'required_if:type,video|url|nullable',
+            'files.*' => 'nullable|file|max:10240', // 10MB max per file
+            'video_urls.*' => 'nullable|url',
         ]);
 
-        $filePath = null;
+        $storedFiles = [];
 
-        if ($request->hasFile('file')) {
-            $filePath = $request->file('file')->store('medias', 'public');
-        } elseif ($request->type === 'video') {
-            $filePath = $request->video_url; // Pour les vidéos, on stocke souvent l'URL YouTube/Vimeo
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $path = $file->store('medias', 'public');
+                $storedFiles[] = $path;
+            }
+        } elseif ($request->type === 'video' && $request->has('video_urls')) {
+            foreach ($request->video_urls as $url) {
+                if ($url) {
+                    $storedFiles[] = $url;
+                }
+            }
         }
 
         $media = Media::create([
@@ -82,10 +89,11 @@ class MediaController extends Controller
             'description' => $request->description,
             'type' => $request->type,
             'category' => $request->category,
-            'file_path' => $filePath,
+            'file_path' => $storedFiles[0] ?? null, // Backward compatibility
+            'files' => $storedFiles,
             'event_id' => $request->event_id,
             'user_id' => auth()->id(),
-            'status' => auth()->user()->isAdmin() ? 'published' : 'pending', // Auto-publication pour l'admin
+            'status' => auth()->user()->isAdmin() ? 'published' : 'pending', 
         ]);
 
         if (!auth()->user()->isAdmin()) {

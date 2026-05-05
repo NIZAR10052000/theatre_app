@@ -17,9 +17,10 @@ class AdminController extends Controller
         $pendingTroupes = User::where('role', 'troupe')->where('is_verified', false)->get();
         $pendingEvents = Event::where('status', 'pending')->get();
         $pendingMedia = Media::where('status', 'pending')->get();
-        $allEvents = Event::latest()->get(); // Pour la gestion complète
+        $allEvents = Event::latest()->get(); 
+        $allMedia = Media::latest()->get();
         
-        return view('admin.dashboard', compact('pendingTroupes', 'pendingEvents', 'pendingMedia', 'allEvents'));
+        return view('admin.dashboard', compact('pendingTroupes', 'pendingEvents', 'pendingMedia', 'allEvents', 'allMedia'));
     }
 
     public function storeEvent(Request $request)

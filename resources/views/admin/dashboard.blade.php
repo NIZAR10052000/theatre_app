@@ -129,7 +129,7 @@
     </div>
 
     <!-- Section Modération Médias -->
-    <div class="bg-white rounded-3xl shadow-sm border border-zinc-100 overflow-hidden" x-data="{ showMediaModal: false, mediaType: 'photo' }">
+    <div class="bg-white rounded-3xl shadow-sm border border-zinc-100 overflow-hidden" x-data="{ showMediaModal: false, mediaType: 'photo', videoUrls: [''] }">
         <div class="p-6 border-b border-zinc-100 flex justify-between items-center">
             <div>
                 <h3 class="text-xl font-bold font-serif">Gestion des Médias</h3>
@@ -180,6 +180,48 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <!-- Section Tous les Médias (Publiés) -->
+        <div class="p-6 border-t border-zinc-100 bg-zinc-50/50">
+            <h4 class="text-sm font-black uppercase tracking-widest text-zinc-400 mb-4">Médias déjà publiés (Médiathèque & Ateliers)</h4>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse bg-white rounded-2xl border border-zinc-100 shadow-sm">
+                    <thead class="bg-zinc-50 text-zinc-500 text-[10px] font-black uppercase tracking-widest">
+                        <tr>
+                            <th class="px-6 py-3">Titre / Catégorie</th>
+                            <th class="px-6 py-3">Type</th>
+                            <th class="px-6 py-3 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-100">
+                        @forelse($allMedia->where('status', 'published') as $media)
+                        <tr class="hover:bg-zinc-50 transition-colors">
+                            <td class="px-6 py-3">
+                                <div class="text-xs font-bold text-zinc-900">{{ $media->title }}</div>
+                                <div class="text-[9px] text-zinc-400 uppercase tracking-widest">{{ $media->category }}</div>
+                            </td>
+                            <td class="px-6 py-3">
+                                <span class="text-[9px] font-black px-2 py-0.5 rounded bg-zinc-100 text-zinc-500 uppercase">{{ $media->type }}</span>
+                            </td>
+                            <td class="px-6 py-3 text-right">
+                                <form action="{{ route('admin.delete-media', $media->id) }}" method="POST" onsubmit="return confirm('Supprimer définitivement ce média ?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-zinc-400 hover:text-red-600 transition-colors">
+                                        <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="px-6 py-8 text-center text-zinc-400 text-xs italic">Aucun média publié pour le moment.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -392,13 +434,19 @@
                 </div>
 
                 <div x-show="mediaType !== 'video'">
-                    <label class="block text-sm font-bold text-zinc-700 mb-2">Fichier</label>
-                    <input type="file" name="file" class="w-full p-2 border border-zinc-200 rounded-xl bg-zinc-50">
+                    <label class="block text-sm font-bold text-zinc-700 mb-2">Fichiers (Sélectionnez plusieurs si besoin)</label>
+                    <input type="file" name="files[]" multiple class="w-full p-2 border border-zinc-200 rounded-xl bg-zinc-50">
                 </div>
 
-                <div x-show="mediaType === 'video'">
+                <div x-show="mediaType === 'video'" class="space-y-4">
                     <label class="block text-sm font-bold text-zinc-700 mb-2">URL de la vidéo (YouTube/Vimeo)</label>
-                    <input type="url" name="video_url" class="w-full px-4 py-3 border border-zinc-200 rounded-xl" placeholder="https://...">
+                    <template x-for="(url, index) in videoUrls" :key="index">
+                        <div class="flex gap-2">
+                            <input type="url" name="video_urls[]" x-model="videoUrls[index]" class="w-full px-4 py-3 border border-zinc-200 rounded-xl" placeholder="https://...">
+                            <button type="button" @click="videoUrls.splice(index, 1)" x-show="videoUrls.length > 1" class="text-red-500 px-2">✕</button>
+                        </div>
+                    </template>
+                    <button type="button" @click="videoUrls.push('')" class="text-xs font-bold text-zinc-500 hover:text-zinc-900">+ Ajouter une autre vidéo</button>
                 </div>
 
                 <div>

@@ -4,7 +4,7 @@
 @section('header_title', 'Gestion de mes Médias')
 
 @section('content')
-<div class="max-w-7xl mx-auto space-y-10" x-data="{ showUploadModal: false, mediaType: 'photo' }">
+<div class="max-w-7xl mx-auto space-y-10" x-data="{ showUploadModal: false, mediaType: 'photo', videoUrls: [''] }">
     
     @if(session('success'))
         <div class="bg-green-100 border border-green-200 text-green-700 px-6 py-4 rounded-2xl flex items-center gap-3 animate-bounce">
@@ -110,14 +110,20 @@
                 </div>
 
                 <div x-show="mediaType !== 'video'">
-                    <label class="block text-sm font-bold text-zinc-700 mb-2">Fichier</label>
-                    <input type="file" name="file" class="w-full p-2 border border-zinc-200 rounded-xl bg-zinc-50">
-                    <p class="text-[10px] text-zinc-400 mt-1">Images ou PDF uniquement. Max 10Mo.</p>
+                    <label class="block text-sm font-bold text-zinc-700 mb-2">Fichiers (Sélectionnez plusieurs si besoin)</label>
+                    <input type="file" name="files[]" multiple class="w-full p-2 border border-zinc-200 rounded-xl bg-zinc-50">
+                    <p class="text-[10px] text-zinc-400 mt-1">Images ou PDF uniquement. Max 10Mo par fichier.</p>
                 </div>
 
-                <div x-show="mediaType === 'video'">
+                <div x-show="mediaType === 'video'" class="space-y-4">
                     <label class="block text-sm font-bold text-zinc-700 mb-2">URL de la vidéo (YouTube/Vimeo)</label>
-                    <input type="url" name="video_url" class="w-full px-4 py-3 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-zinc-800 outline-none" placeholder="https://www.youtube.com/watch?v=...">
+                    <template x-for="(url, index) in videoUrls" :key="index">
+                        <div class="flex gap-2">
+                            <input type="url" name="video_urls[]" x-model="videoUrls[index]" class="w-full px-4 py-3 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-zinc-800 outline-none" placeholder="https://www.youtube.com/watch?v=...">
+                            <button type="button" @click="videoUrls.splice(index, 1)" x-show="videoUrls.length > 1" class="text-red-500 px-2">✕</button>
+                        </div>
+                    </template>
+                    <button type="button" @click="videoUrls.push('')" class="text-xs font-bold text-zinc-500 hover:text-zinc-900">+ Ajouter une autre vidéo</button>
                 </div>
 
                 <div>

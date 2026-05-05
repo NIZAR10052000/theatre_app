@@ -75,6 +75,16 @@
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M7 10l5 5m0 0l5-5m-5 5V3"/></svg>
                                     </a>
                                 @endif
+
+                                @if(auth()->user() && auth()->user()->isAdmin())
+                                    <form action="{{ route('admin.delete-media', $media->id) }}" method="POST" @click.stop onsubmit="return confirm('Supprimer ce média ?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="w-10 h-10 rounded-full border border-red-100 flex items-center justify-center text-red-400 hover:bg-red-500 hover:text-white transition-all shadow-sm">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -93,30 +103,56 @@
     <div x-show="showModal" 
          x-transition.opacity 
          style="display: none;" 
-         class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-zinc-900/95 backdrop-blur-xl">
+         class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-zinc-900/95 backdrop-blur-xl"
+         x-data="{ activeIndex: 0 }">
         
-        <button @click="showModal = false" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]">
+        <button @click="showModal = false; activeIndex = 0" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]">
             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
 
-        <div class="w-full max-w-6xl max-h-full flex flex-col items-center" @click.away="showModal = false">
+        <div class="w-full max-w-6xl max-h-full flex flex-col items-center" @click.away="showModal = false; activeIndex = 0">
             <template x-if="activeMedia">
                 <div class="w-full flex flex-col lg:flex-row gap-10 items-center">
                     <!-- Media Content -->
-                    <div class="w-full lg:w-3/4 aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10">
-                        <template x-if="activeMedia.type === 'photo'">
-                            <img :src="'/storage/' + activeMedia.file_path" class="w-full h-full object-contain">
+                    <div class="w-full lg:w-3/4 aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative group">
+                        
+                        <!-- Files Loop -->
+                        <template x-for="(file, index) in (activeMedia.files || [activeMedia.file_path])" :key="index">
+                            <div x-show="activeIndex === index" class="w-full h-full">
+                                <template x-if="activeMedia.type === 'photo'">
+                                    <img :src="'/storage/' + file" class="w-full h-full object-contain">
+                                </template>
+                                <template x-if="activeMedia.type === 'video'">
+                                    <iframe :src="'https://www.youtube.com/embed/' + (file.includes('v=') ? file.split('v=')[1].split('&')[0] : file.split('/').pop())" 
+                                            class="w-full h-full" 
+                                            frameborder="0" 
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                            allowfullscreen>
+                                    </iframe>
+                                </template>
+                                <template x-if="activeMedia.type === 'document'">
+                                    <iframe :src="'/storage/' + file" class="w-full h-full"></iframe>
+                                </template>
+                            </div>
                         </template>
-                        <template x-if="activeMedia.type === 'video'">
-                            <iframe :src="'https://www.youtube.com/embed/' + (activeMedia.file_path.includes('v=') ? activeMedia.file_path.split('v=')[1].split('&')[0] : activeMedia.file_path.split('/').pop())" 
-                                    class="w-full h-full" 
-                                    frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen>
-                            </iframe>
+
+                        <!-- Carousel Controls -->
+                        <template x-if="(activeMedia.files || []).length > 1">
+                            <div class="absolute inset-0 flex items-center justify-between px-4 pointer-events-none">
+                                <button @click="activeIndex = activeIndex === 0 ? activeMedia.files.length - 1 : activeIndex - 1" class="w-12 h-12 bg-black/50 hover:bg-theatre-red text-white rounded-full flex items-center justify-center backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 pointer-events-auto">
+                                    &#10094;
+                                </button>
+                                <button @click="activeIndex = activeIndex === activeMedia.files.length - 1 ? 0 : activeIndex + 1" class="w-12 h-12 bg-black/50 hover:bg-theatre-red text-white rounded-full flex items-center justify-center backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 pointer-events-auto">
+                                    &#10095;
+                                </button>
+                            </div>
                         </template>
-                        <template x-if="activeMedia.type === 'document'">
-                            <iframe :src="'/storage/' + activeMedia.file_path" class="w-full h-full"></iframe>
+
+                        <!-- Counter -->
+                        <template x-if="(activeMedia.files || []).length > 1">
+                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 bg-black/50 backdrop-blur-md rounded-full text-[10px] text-white font-bold">
+                                <span x-text="activeIndex + 1"></span> / <span x-text="activeMedia.files.length"></span>
+                            </div>
                         </template>
                     </div>
 
