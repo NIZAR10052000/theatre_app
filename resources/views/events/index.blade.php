@@ -173,7 +173,6 @@
                                                             <span class="text-zinc-300 font-bold text-[10px] uppercase tracking-[0.2em]">Terminé</span>
                                                         @endif
                                                     @else
-                                                    @else
                                                         <a href="{{ route('events.booking', $event->id) }}" class="text-theatre-red font-black text-xs hover:underline active:scale-95 transition-transform uppercase tracking-widest">Réserver →</a>
                                                     @endif
                                                 </div>
