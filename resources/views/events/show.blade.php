@@ -44,16 +44,16 @@
                         </div>
                     </div>
 
-                    @if($event->booking_url)
-                        <div class="pt-6">
-                            <a href="{{ $event->booking_url }}" target="_blank" class="inline-block bg-theatre-red hover:bg-red-700 text-white px-10 py-4 rounded-full font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-red-900/20">
-                                Réserver sur BilletRéduc
-                            </a>
-                            @if($event->price)
-                                <span class="ml-6 text-lg font-serif italic text-zinc-400">Tarif: {{ $event->price }}</span>
-                            @endif
-                        </div>
-                    @endif
+                        @if($event->booking_url)
+                            <div class="pt-6">
+                                <a href="{{ route('events.booking', $event->id) }}" class="inline-block bg-theatre-red hover:bg-red-700 text-white px-10 py-4 rounded-full font-black text-sm uppercase tracking-widest transition-all shadow-xl shadow-red-900/20">
+                                    Réserver sur BilletRéduc
+                                </a>
+                                @if($event->price)
+                                    <span class="ml-6 text-lg font-serif italic text-zinc-400">Tarif: {{ $event->price }}</span>
+                                @endif
+                            </div>
+                        @endif
                 </div>
 
                 <!-- Large Carousel -->
@@ -158,7 +158,7 @@
                         </ul>
                         
                         @if($event->booking_url)
-                            <a href="{{ $event->booking_url }}" target="_blank" class="mt-8 w-full block text-center bg-white text-zinc-900 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-theatre-red hover:text-white transition-all">
+                            <a href="{{ route('events.booking', $event->id) }}" class="mt-8 w-full block text-center bg-white text-zinc-900 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-theatre-red hover:text-white transition-all">
                                 Réserver mon billet
                             </a>
                         @endif

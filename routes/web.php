@@ -7,6 +7,7 @@ use App\Http\Controllers\PageController;
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/programme', [EventController::class, 'index'])->name('events.index');
 Route::get('/programme/{id}', [EventController::class, 'show'])->name('events.show');
+Route::get('/reserver/{id}', [EventController::class, 'bookingRedirect'])->name('events.booking');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/historique', [PageController::class, 'historique'])->name('pages.historique');
 Route::get('/le-lieu', [PageController::class, 'lieu'])->name('pages.lieu');

@@ -42,4 +42,10 @@ class EventController extends Controller
 
         return view('events.show', compact('event', 'suggestions'));
     }
+
+    public function bookingRedirect($id)
+    {
+        $event = Event::findOrFail($id);
+        return view('events.booking-redirect', compact('event'));
+    }
 }

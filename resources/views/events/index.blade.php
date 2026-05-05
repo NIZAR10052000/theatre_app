@@ -173,13 +173,8 @@
                                                             <span class="text-zinc-300 font-bold text-[10px] uppercase tracking-[0.2em]">Terminé</span>
                                                         @endif
                                                     @else
-                                                        @auth
-                                                            @if(auth()->user()->role === 'user')
-                                                                <button @click="showReservationModal = true; selectedEventTitle = '{{ addslashes($event->title) }}'; step = 1; quantity = 1;" class="text-theatre-red font-black text-xs hover:underline active:scale-95 transition-transform uppercase tracking-widest">Réserver →</button>
-                                                            @endif
-                                                        @else
-                                                            <a href="{{ route('mockups.login', ['redirect' => route('events.index')]) }}" class="text-theatre-red font-black text-xs hover:underline active:scale-95 transition-transform uppercase tracking-widest">Réserver →</a>
-                                                        @endauth
+                                                    @else
+                                                        <a href="{{ route('events.booking', $event->id) }}" class="text-theatre-red font-black text-xs hover:underline active:scale-95 transition-transform uppercase tracking-widest">Réserver →</a>
                                                     @endif
                                                 </div>
                                             </div>
