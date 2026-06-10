@@ -49,12 +49,6 @@
                     Se connecter
                 </button>
             </div>
-            
-            <div class="text-center mt-6">
-                <a href="{{ route('mockups.register') }}" class="text-sm font-medium text-theatre-red hover:text-red-800 transition-colors">
-                    Pas encore de compte ? S'inscrire
-                </a>
-            </div>
         </form>
     </div>
 </div>

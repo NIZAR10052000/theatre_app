@@ -93,20 +93,10 @@ class MediaController extends Controller
             'files' => $storedFiles,
             'event_id' => $request->event_id,
             'user_id' => auth()->id(),
-            'status' => auth()->user()->isAdmin() ? 'published' : 'pending', 
+            'status' => 'published', 
         ]);
 
-        if (!auth()->user()->isAdmin()) {
-            $admins = \App\Models\User::where('role', 'admin')->get();
-            \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\AdminAlert(
-                'Nouveau média à valider: ' . $media->title,
-                'media',
-                route('admin.dashboard')
-            ));
-        }
-
-        $message = auth()->user()->isAdmin() ? 'Média ajouté et publié avec succès !' : 'Votre média a été soumis pour validation par le modérateur.';
-        return back()->with('success', $message);
+        return back()->with('success', 'Média ajouté et publié avec succès !');
     }
 
     /**

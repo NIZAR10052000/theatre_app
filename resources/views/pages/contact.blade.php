@@ -18,6 +18,17 @@
 
 <section class="py-24 bg-white">
     <div class="container mx-auto px-4 max-w-6xl">
+        @if(session('success'))
+            <div class="bg-green-100 border border-green-200 text-green-700 px-6 py-4 rounded-2xl mb-12 animate-bounce">
+                ✅ {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="bg-red-100 border border-red-200 text-red-700 px-6 py-4 rounded-2xl mb-12 animate-bounce">
+                ⚠️ {{ session('error') }}
+            </div>
+        @endif
+
         <div class="grid lg:grid-cols-2 gap-20">
             <!-- Form Side -->
             <div class="space-y-12">
@@ -26,7 +37,7 @@
                     <p class="text-zinc-500">Une question sur un spectacle, une demande de résidence ou d'atelier ? Nous vous répondons au plus vite.</p>
                 </div>
 
-                <form action="#" method="POST" class="space-y-6">
+                <form action="{{ route('contact.submit') }}" method="POST" class="space-y-6">
                     @csrf
                     <div class="grid md:grid-cols-2 gap-6">
                         <div class="space-y-2">

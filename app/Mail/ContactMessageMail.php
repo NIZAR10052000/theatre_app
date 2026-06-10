@@ -2,26 +2,26 @@
 
 namespace App\Mail;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class WelcomeTroupeMail extends Mailable
+class ContactMessageMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    public $data;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user)
+    public function __construct($data)
     {
-        $this->user = $user;
+        $this->data = $data;
     }
 
     /**
@@ -30,7 +30,7 @@ class WelcomeTroupeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Bienvenue au Théâtre ! Votre compte troupe est en cours de validation.',
+            subject: 'Nouveau message : ' . ($this->data['subject'] ?? 'Contact'),
         );
     }
 
@@ -40,14 +40,14 @@ class WelcomeTroupeMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.welcome-troupe',
+            markdown: 'emails.contact-message',
         );
     }
 
     /**
      * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return array<int, Attachment>
      */
     public function attachments(): array
     {

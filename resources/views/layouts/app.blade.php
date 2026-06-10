@@ -92,9 +92,7 @@
                     @auth
                         <div class="flex items-center gap-4">
                             @if(auth()->user()->isAdmin())
-                                <a href="{{ route('admin.dashboard') }}" class="text-xs font-bold text-white bg-zinc-800 px-4 py-1.5 rounded-lg hover:bg-black transition-all">Admin</a>
-                            @elseif(auth()->user()->isTroupe() && auth()->user()->isVerified())
-                                <a href="{{ route('mockups.troupe-dashboard') }}" class="text-xs font-bold text-white bg-zinc-800 px-4 py-1.5 rounded-lg hover:bg-black transition-all">Mon Espace</a>
+                                <a href="{{ route('admin.dashboard') }}" class="text-xs font-bold text-white bg-zinc-800 px-4 py-1.5 rounded-lg hover:bg-black transition-all">Modération</a>
                             @endif
                             
                             <form action="{{ route('logout') }}" method="POST" class="inline">
@@ -108,10 +106,6 @@
                 </div>
                 @guest
                     <a href="{{ route('events.index') }}" class="btn-red">Réserver</a>
-                @else
-                    @if(auth()->user()->role === 'user')
-                        <a href="{{ route('events.index') }}" class="btn-red">Réserver</a>
-                    @endif
                 @endguest
                 <button class="md:hidden text-zinc-800">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>

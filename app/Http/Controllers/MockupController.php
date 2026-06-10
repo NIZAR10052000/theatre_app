@@ -8,10 +8,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-use Illuminate\Support\Facades\Mail;
-use App\Mail\WelcomeUserMail;
-use App\Mail\WelcomeTroupeMail;
-
 class MockupController extends Controller
 {
     public function login(Request $request)
@@ -29,100 +25,16 @@ class MockupController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             
-            // Priorité absolue aux tableaux de bord pour l'Admin et les Troupes
-            if ($user->isAdmin()) {
-                return redirect()->route('admin.dashboard');
+            // Seuls les admins peuvent se connecter
+            if (!$user->isAdmin()) {
+                Auth::logout();
+                return back()->withErrors(['email' => 'Accès réservé aux administrateurs.']);
             }
             
-            if ($user->isTroupe()) {
-                return redirect()->route('mockups.troupe-dashboard');
-            }
-
-            // Seuls les "utilisateurs normaux" reviennent à la page où ils étaient (ex: l'Agenda)
-            return redirect()->intended(route('home'));
+            return redirect()->route('admin.dashboard');
         }
 
         return back()->withErrors(['email' => 'Identifiants incorrects.']);
-    }
-
-    public function register()
-    {
-        return view('mockups.register');
-    }
-
-    public function processRegister(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                \Illuminate\Validation\Rules\Password::min(8)
-                    ->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols(),
-            ],
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role === 'troupe' ? 'troupe' : 'user',
-            'is_verified' => ($request->role === 'troupe' ? false : true),
-        ]);
-
-        // Envoi de l'email de bienvenue
-        try {
-            if ($user->isTroupe()) {
-                Mail::to($user->email)->send(new WelcomeTroupeMail($user));
-                
-                // Notifier les admins de la nouvelle inscription
-                $admins = User::where('role', 'admin')->get();
-                \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\AdminAlert(
-                    'Nouvelle troupe en attente de validation: ' . $user->name,
-                    'troupe',
-                    route('admin.dashboard')
-                ));
-            } else {
-                Mail::to($user->email)->send(new WelcomeUserMail($user));
-            }
-        } catch (\Exception $e) {
-            // On ignore l'erreur si le serveur mail n'est pas configuré (mockup)
-            \Log::error("Erreur envoi email bienvenue: " . $e->getMessage());
-        }
-
-        Auth::login($user);
-
-        if ($user->isTroupe()) {
-            return redirect()->route('mockups.troupe-dashboard');
-        }
-
-        return redirect()->route('home');
-    }
-
-    public function troupeDashboard()
-    {
-        $user = auth()->user();
-        
-        // Statistiques réelles
-        $upcomingShowsCount = \App\Models\Event::where('user_id', $user->id)
-            ->where('status', 'published')
-            ->where('event_date', '>=', now()->toDateString())
-            ->count();
-            
-        $eventIds = \App\Models\Event::where('user_id', $user->id)->pluck('id');
-        
-        $ticketsSold = \App\Models\Ticket::whereIn('event_id', $eventIds)->count();
-        
-        $revenue = \App\Models\Ticket::whereIn('event_id', $eventIds)->sum('price');
-        
-        $myEvents = \App\Models\Event::where('user_id', $user->id)->latest()->take(5)->get();
-
-        return view('mockups.troupe-dashboard', compact('upcomingShowsCount', 'ticketsSold', 'revenue', 'myEvents'));
     }
 
     public function logout()

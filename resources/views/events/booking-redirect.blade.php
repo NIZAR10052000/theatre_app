@@ -3,7 +3,7 @@
 @section('title', 'Redirection vers BilletRéduc - ' . $event->title)
 
 @section('content')
-<div class="min-h-[80vh] flex items-center justify-center bg-zinc-50" x-data="{ countdown: 8 }">
+<div class="min-h-[80vh] flex items-center justify-center bg-zinc-50" x-data="{ countdown: 15 }">
     <div class="max-w-2xl w-full mx-4" x-init="
         const timer = setInterval(() => {
             countdown--;
