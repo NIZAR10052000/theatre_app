@@ -33,7 +33,7 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
         
-        // On récupère aussi quelques spectacles suggérés (même catégorie)
+        // On récupère aussi quelques spectacles suggérés dans la même catégorie
         $suggestions = Event::where('category', $event->category)
                             ->where('id', '!=', $event->id)
                             ->where('status', 'published')

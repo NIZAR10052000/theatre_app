@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 class UserFactory extends Factory
 {
     /**
-     * The current password being used by the factory.
+     * le mdp actuel est utilisé pour éviter de générer un hash à chaque création d'utilisateur 
      */
     protected static ?string $password;
 
@@ -33,9 +33,7 @@ class UserFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
+    
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [

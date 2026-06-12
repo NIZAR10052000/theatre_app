@@ -16,7 +16,7 @@ class AdminAlert extends Notification
     public $url;
 
     /**
-     * Create a new notification instance.
+     * Creer un nouvelle instance de notification.
      */
     public function __construct($message, $type, $url = '#')
     {
@@ -26,7 +26,6 @@ class AdminAlert extends Notification
     }
 
     /**
-     * Get the notification's delivery channels.
      *
      * @return array<int, string>
      */
@@ -36,7 +35,6 @@ class AdminAlert extends Notification
     }
 
     /**
-     * Get the array representation of the notification.
      *
      * @return array<string, mixed>
      */

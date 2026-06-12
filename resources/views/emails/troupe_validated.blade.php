@@ -13,7 +13,7 @@
                     <!-- Header -->
                     <tr>
                         <td align="center" style="background-color: #e63946; padding: 40px 0;">
-                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: bold;">Le Pas Fleuri</h1>
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: bold;">Théâtre Ça Respire Encore</h1>
                             <p style="color: rgba(255,255,255,0.8); margin: 5px 0 0 0; font-size: 16px;">Théâtre Ça Respire Encore</p>
                         </td>
                     </tr>
@@ -28,7 +28,7 @@
                             </p>
                             
                             <div style="background-color: #f0fdf4; border-left: 4px solid #22c55e; padding: 20px; margin: 30px 0; border-radius: 0 8px 8px 0;">
-                                <p style="margin: 0; color: #166534; font-size: 16px; font-weight: bold;">✅ Accès Complet Déverrouillé</p>
+                                <p style="margin: 0; color: #166534; font-size: 16px; font-weight: bold;"> Accès Complet Déverrouillé</p>
                                 <p style="margin: 10px 0 0 0; color: #15803d; font-size: 15px;">Vous pouvez dès maintenant proposer vos spectacles et événements directement depuis votre tableau de bord.</p>
                             </div>
 

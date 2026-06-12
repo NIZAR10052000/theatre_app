@@ -39,14 +39,11 @@ class MediaController extends Controller
         return view('media.ateliers', compact('medias'));
     }
 
-    /**
-     * Espace personnel Troupe : Gestion des médias (Atelier)
-     */
     public function manage()
     {
         $medias = Media::where('user_id', auth()->id())->latest()->get();
         
-        // L'admin peut lier à n'importe quel spectacle, la troupe seulement aux siens
+        // L'admin peut lier à n'importe quel spectacle
         if (auth()->user()->isAdmin()) {
             $events = Event::all();
         } else {
@@ -117,7 +114,7 @@ class MediaController extends Controller
     {
         $media = Media::findOrFail($id);
         
-        // Supprimer le fichier physique s'il existe
+        // Supprimer le fichier  s'il existe
         if ($media->type !== 'video' && $media->file_path) {
             Storage::disk('public')->delete($media->file_path);
         }

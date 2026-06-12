@@ -17,27 +17,18 @@ class TroupeValidatedMail extends Mailable
 
     public $user;
 
-    /**
-     * Create a new message instance.
-     */
     public function __construct(User $user)
     {
         $this->user = $user;
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '✅ Bonne nouvelle ! Votre compte Troupe a été validé',
+            subject: ' Bonne nouvelle ! Votre compte Troupe a été validé',
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
@@ -46,7 +37,6 @@ class TroupeValidatedMail extends Mailable
     }
 
     /**
-     * Get the attachments for the message.
      *
      * @return array<int, Attachment>
      */
