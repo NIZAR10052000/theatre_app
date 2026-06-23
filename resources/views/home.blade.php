@@ -20,7 +20,7 @@
                 </h1>
                 
                 <p class="text-xl md:text-2xl text-zinc-400 mb-12 font-medium leading-relaxed max-w-xl">
-                    Un espace de liberté artistique au cœur de Reillon. Création, diffusion et formation.
+                    Un espace de liberté artistique au cœur de la campagne lorraine. Création, diffusion et formation.
                 </p>
                 
                 <div class="flex flex-wrap gap-6 justify-center lg:justify-start">
@@ -103,7 +103,7 @@
                         <span class="text-theatre-red italic italic">habitée.</span>
                     </h2>
                     <p class="text-zinc-600 leading-relaxed text-xl font-medium">
-                        Le <span class="text-zinc-900 font-bold">Théâtre Ça Respire Encore</span> est bien plus qu'un lieu ; c'est un souffle créatif qui anime Reillon depuis ses racines lorraines.
+                        Le <span class="text-zinc-900 font-bold">Théâtre Ça Respire Encore</span> est bien plus qu'un lieu ; c'est un souffle créatif qui anime le petit village de Reillon et sa Communauté de Communes.
                     </p>
                 </div>
 
@@ -113,14 +113,14 @@
                         <div class="absolute -left-[41px] top-1 w-4 h-4 rounded-full bg-white border-2 border-theatre-red shadow-sm"></div>
                         <h4 class="text-sm font-black uppercase tracking-widest text-zinc-900 mb-2">1991 — La Naissance</h4>
                         <p class="text-zinc-500 text-sm leading-relaxed">
-                            Daniel Pierson et Kiki Paquier posent les premières pierres d'une aventure humaine et artistique hors du commun.
+                            Daniel Pierson  comédien /metteur en scène et Kiki Paquier comédienne  posent les premières pierres d'une aventure humaine et artistique hors du commun.
                         </p>
                     </div>
                     <div class="relative">
                         <div class="absolute -left-[41px] top-1 w-4 h-4 rounded-full bg-white border-2 border-zinc-200"></div>
                         <h4 class="text-sm font-black uppercase tracking-widest text-zinc-900 mb-2">2002 — L'Étape Nancéienne</h4>
                         <p class="text-zinc-500 text-sm leading-relaxed">
-                            Installation rue Saint-Dizier, le théâtre devient une halte incontournable du paysage culturel de Nancy.
+                            Installation au 126bis,rue Saint-Dizier, le théâtre devient une halte incontournable du paysage culturel de Nancy.
                         </p>
                     </div>
                     <div class="relative">
@@ -195,7 +195,7 @@
                             Les Amuse-gueules
                         </h3>
                         <p class="text-zinc-400 text-sm leading-relaxed italic">
-                            "Une lecture, une tartine et un verre de vin pour 3 euros... C'est la promesse d'une soirée où le texte respire avec vous."
+                            "Une lecture, une tartine et un verre de vin pour 10 euros... C'est la promesse d'une soirée où le texte respire avec vous."
                         </p>
                     </div>
                     <div class="space-y-4">
@@ -239,7 +239,7 @@
                         <div class="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-zinc-950 rounded-full border border-white/5"></div>
                         
                         <div class="relative z-10 border-2 border-white/20 rounded-2xl p-6 text-center space-y-2">
-                            <span class="block text-4xl font-black italic tracking-tighter">3€</span>
+                            <span class="block text-4xl font-black italic tracking-tighter">10€</span>
                             <div class="h-px bg-white/20 w-full"></div>
                             <span class="block text-[10px] font-black uppercase tracking-[0.2em] text-red-200">Tout Compris</span>
                         </div>
@@ -261,7 +261,7 @@
                     <span class="text-xs font-black uppercase tracking-widest text-zinc-500">Localisation</span>
                 </div>
                 <h2 class="text-5xl font-serif font-black text-zinc-900 leading-tight">Le Lieu</h2>
-                <p class="text-zinc-500 text-lg">Une salle intimiste équipée professionnellement au cœur de Reillon.</p>
+                <p class="text-zinc-500 text-lg">Un petit théâtre convivial et intimiste </p>
             </div>
             <div class="hidden lg:block pb-2">
                 <span class="text-xs font-black uppercase tracking-[0.4em] text-zinc-300">Scénographie • Acoustique • Convivialité</span>

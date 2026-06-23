@@ -109,7 +109,6 @@
         <div class="flex flex-wrap justify-center gap-x-12 gap-y-6 text-zinc-400 font-bold uppercase tracking-widest text-xs">
             <span>Daniel Pierson</span>
             <span>Kiki Paquier</span>
-            <span>Hajar</span>
             <span>Et tant d'autres...</span>
         </div>
     </div>

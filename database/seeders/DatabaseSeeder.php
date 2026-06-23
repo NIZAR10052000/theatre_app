@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
 
     //On crée 10 faux utilisateurs (spectateurs)
     \App\Models\User::factory(10)->create([
-        'role' => 'client',
+        'role' => 'admin',
     ]);
 
     //On crée 10 fausses pièces de théâtre
