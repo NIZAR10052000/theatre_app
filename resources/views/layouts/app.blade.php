@@ -70,7 +70,7 @@
 </head>
 <body class="antialiased text-zinc-900">
 
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-zinc-100">
+    <header x-data="{ mobileOpen: false }" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-zinc-100">
         <div class="container mx-auto px-4 py-3 flex items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-2">
                 <img src="{{ asset('images/photo1.JPG') }}" alt="Logo" class="w-10 h-10 rounded-lg object-cover shadow-sm">
@@ -107,11 +107,26 @@
                 @guest
                     <a href="{{ route('events.index') }}" class="btn-red">Réserver</a>
                 @endguest
-                <button class="md:hidden text-zinc-800">
+                <button @click="mobileOpen = !mobileOpen" class="md:hidden text-zinc-800" aria-label="Ouvrir le menu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
             </div>
         </div>
+
+        <nav x-show="mobileOpen" x-cloak @click.away="mobileOpen = false" class="md:hidden bg-white/95 border-t border-zinc-100 shadow-sm">
+            <div class="container mx-auto px-4 py-4 flex flex-col gap-3">
+                <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'text-theatre-red' : '' }}">Accueil</a>
+                <a href="{{ route('pages.historique') }}" class="nav-link {{ request()->routeIs('pages.historique') ? 'text-theatre-red' : '' }}">Notre Histoire</a>
+                <a href="{{ route('events.index') }}" class="nav-link {{ request()->routeIs('events.index') ? 'text-theatre-red' : '' }}">Agenda</a>
+                <a href="{{ route('media.index') }}" class="nav-link {{ request()->routeIs('media.index') ? 'text-theatre-red' : '' }}">Médiathèque</a>
+                <a href="{{ route('media.ateliers') }}" class="nav-link {{ request()->routeIs('media.ateliers') ? 'text-theatre-red' : '' }}">Ateliers</a>
+                <a href="{{ route('pages.lieu') }}" class="nav-link {{ request()->routeIs('pages.lieu') ? 'text-theatre-red' : '' }}">Le Lieu</a>
+                <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'text-theatre-red' : '' }}">Contact</a>
+                @guest
+                    <a href="{{ route('events.index') }}" class="btn-red inline-block text-center">Réserver</a>
+                @endguest
+            </div>
+        </nav>
     </header>
 
     <main>
